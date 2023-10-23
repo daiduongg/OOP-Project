@@ -6,23 +6,21 @@ import java.util.List;
 
 public class DictionaryManagement {
     //File to test wirte
-    static final String tempFile = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\dictionaries.txt";
+    public static final String TEMP_FILE_PATH = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\dictionaries.txt";
     //File En to Vi
-    static final String dataEVFilePath = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\En-Vi.txt";
+    public static final String DATA_EV_FILE_PATH = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\En-Vi.txt";
     //File Vi to En
-    static final String dataVEFilePath = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\Vi-En.txt";
+    public static final String DATA_VE_FILE_PATH = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\Vi-En.txt";
 
     private DictionaryDataBase dictionary;
 
     public DictionaryManagement() {
         dictionary = new DictionaryDataBase();
+        loadDataFromFile(DATA_EV_FILE_PATH);
+        loadDataFromFile(DATA_VE_FILE_PATH);
     }
 
-    public DictionaryManagement(DictionaryDataBase dictionary) {
-        this.dictionary = dictionary;
-    }
-
-    public boolean insertFromFile(String filePath) {
+    public boolean loadDataFromFile(String filePath) {
         try {
             FileReader file = new FileReader(filePath);
             BufferedReader reader = new BufferedReader(file);
@@ -80,21 +78,19 @@ public class DictionaryManagement {
         return true;
     }
 
-    public void dictionaryLookup(String prefix) {
+    public List<Word> dictionaryLookup(String prefix) {
         List<Word> wordsList = dictionary.getWordsHasPrefix(prefix);
         if (wordsList.isEmpty()) {
             System.err.println("Word not found!");
-        } else {
-            for (Word word : wordsList) {
-                System.out.println("@" + word.getWord_name() + " " + word.getWord_data());
-            }
+            return null;
         }
+        return wordsList;
     }
 
     public static void main(String[] args) {
         DictionaryManagement dictManager = new DictionaryManagement();
-        dictManager.insertFromFile(dataVEFilePath);
+        dictManager.loadDataFromFile(DATA_VE_FILE_PATH);
         //dictManager.dictionaryLookup("try");
-        dictManager.dictionaryExportToFile(tempFile);
+        dictManager.dictionaryExportToFile(TEMP_FILE_PATH);
     }
 }

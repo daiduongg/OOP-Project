@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 
 public class Trie {
-    public static final String lowerCase = "aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz -";
-    public static final String upperCase = "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZ -";
+    public static final String LOWER_CASE_ALPHABET = "aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz -";
+    public static final String UPPER_CASE_ALPHABET = "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZ -";
 
     public class Node {
         Map<Character, Node> children;
@@ -23,11 +23,11 @@ public class Trie {
     private Node root;
 
     private int charToIndex(char c) {
-        return lowerCase.indexOf(c);
+        return LOWER_CASE_ALPHABET.indexOf(c);
     }
 
     private char indexToChar(int index) {
-        return upperCase.charAt(index);
+        return UPPER_CASE_ALPHABET.charAt(index);
     }
 
     private String toLowerCase(String input) {
@@ -35,9 +35,9 @@ public class Trie {
 
         for (int i = 0; i < input.length(); i++) {
             char cur = input.charAt(i);
-            int index = upperCase.indexOf(cur);
+            int index = UPPER_CASE_ALPHABET.indexOf(cur);
             if (index != -1) {
-                result.setCharAt(i, lowerCase.charAt(index));
+                result.setCharAt(i, LOWER_CASE_ALPHABET.charAt(index));
             }
         }
 
@@ -131,7 +131,7 @@ public class Trie {
             sortedWords.add(new Word(cur_word, cur.word_data));
         }
 
-        for (char c : lowerCase.toCharArray()) {
+        for (char c : LOWER_CASE_ALPHABET.toCharArray()) {
             if (cur.children.get(c) != null) {
                 getSortedWords(cur.children.get(c), cur_word + c, sortedWords);
             }
