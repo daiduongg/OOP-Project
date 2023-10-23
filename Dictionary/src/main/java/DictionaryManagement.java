@@ -1,38 +1,62 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.util.List;
 
 public class DictionaryManagement {
-    Dictionary dictionary;
-    static final String filePath = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP" +
-                                    "\\Dictionary\\src\\main\\resources\\dictionaries.txt";
+    //File to test wirte
+    static final String tempFile = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\dictionaries.txt";
+    //File En to Vi
+    static final String dataEVFilePath = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\En-Vi.txt";
+    //File Vi to En
+    static final String dataVEFilePath = "C:\\Users\\daidu\\OneDrive - vnu.edu.vn\\Desktop\\BP OOP\\Dictionary\\src\\main\\resources\\Vi-En.txt";
+
+    private DictionaryDataBase dictionary;
 
     public DictionaryManagement() {
-        //do not thing
+        dictionary = new DictionaryDataBase();
     }
 
-    public DictionaryManagement(Dictionary dictionary) {
+    public DictionaryManagement(DictionaryDataBase dictionary) {
         this.dictionary = dictionary;
     }
 
-    public boolean insertFromFile() {
+    public boolean insertFromFile(String filePath) {
         try {
-            File file = new File(filePath);
-            Scanner scanner = new Scanner(file);
+            FileReader file = new FileReader(filePath);
+            BufferedReader reader = new BufferedReader(file);
 
-            int count_line = 0;
-            while (scanner.hasNextLine()) {
-                count_line++;
-                String line = scanner.nextLine();
-                String[] data = line.split("\t");
-                if (data.length != 2) {
-                    System.err.println("Line " + count_line + " is in wrong format!");
+            String line;
+            String data = null;
+
+            while ((line = reader.readLine()) != null) {
+                //Format file: Word start with "@"
+                if (line.startsWith("@")) {
+                    //Skip the first line of file
+                    if (data != null) {
+                        //Format file: Word's name end before "/" or "\n"
+                        int index = data.indexOf('/');
+                        if (index == -1) {
+                            index = data.indexOf('\n');
+                        }
+
+                        String word_name = data.substring(1, index).trim();
+                        String word_data = data;
+                        //System.out.println(data);
+                        if (dictionary.insert(word_name, word_data)) {
+                            System.out.println(word_name + " has been inserted from file!");
+                        } else {
+                            System.out.println(word_name + " cut!");
+                        }
+                    }
+                    data = line + "\n";
                 } else {
-                    dictionary.insertWord(data[0], data[1]);
+                    data += line + "\n";
                 }
             }
+            reader.close();
+            file.close();
         } catch (IOException e) {
             System.err.println("Error reading data to file: " + e.getMessage());
             return false;
@@ -40,13 +64,13 @@ public class DictionaryManagement {
         return true;
     }
 
-    public boolean dictionaryExportToFile() {
+    public boolean dictionaryExportToFile(String filePath) {
         try {
             FileWriter writer = new FileWriter(filePath);
 
-            for (Word word : dictionary.getSortedWords()) {
-                writer.write(word.getWord_target() + "\t" + word.getWord_explain() + "\n");
-                System.out.println("Success!");
+            for (Word word : dictionary.getAllWords()) {
+                writer.write( word.getWord_data() + "\n");
+                System.out.println("\"" + word.getWord_name() + "\" has been exported to file!");
             }
             writer.close();
         } catch (IOException e) {
@@ -56,25 +80,21 @@ public class DictionaryManagement {
         return true;
     }
 
-    public void dictionaryLookup() {
-
+    public void dictionaryLookup(String prefix) {
+        List<Word> wordsList = dictionary.getWordsHasPrefix(prefix);
+        if (wordsList.isEmpty()) {
+            System.err.println("Word not found!");
+        } else {
+            for (Word word : wordsList) {
+                System.out.println("@" + word.getWord_name() + " " + word.getWord_data());
+            }
+        }
     }
 
     public static void main(String[] args) {
-        Dictionary dictionary = new Dictionary();
-        dictionary.insertWord("apple", "a fruit");
-        dictionary.insertWord("banana", "a yellow fruit");
-        dictionary.insertWord("computer", "an electronic device");
-        dictionary.insertWord("programming", "the process of writing code");
-        dictionary.insertWord("language", "a means of communication");
-        dictionary.insertWord("book", "a written or printed work");
-        dictionary.insertWord("coffee", "a popular beverage");
-        dictionary.insertWord("island", "a piece of land surrounded by water");
-        dictionary.insertWord("sun", "the star at the center of our solar system");
-        dictionary.insertWord("flower", "a colorful plant part");
-
-        DictionaryManagement dictManager = new DictionaryManagement(dictionary);
-        dictManager.insertFromFile();
-        dictManager.dictionaryExportToFile();
+        DictionaryManagement dictManager = new DictionaryManagement();
+        dictManager.insertFromFile(dataVEFilePath);
+        //dictManager.dictionaryLookup("try");
+        dictManager.dictionaryExportToFile(tempFile);
     }
 }
