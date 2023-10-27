@@ -2,18 +2,18 @@ import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
 public class TextToSpeechAPI {
-    //String voiceName = "kevin16";
+    String voiceName = "kevin16";
     VoiceManager freeVM;
     Voice voice;
 
     public TextToSpeechAPI(String words) {
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-        voice = VoiceManager.getInstance().getVoice("kevin16");
+        voice = VoiceManager.getInstance().getVoice(voiceName);
         if (voice != null) {
             voice.allocate();// Allocating Voice
             try {
-                voice.setRate(130);// Setting the rate of the voice
-                voice.setPitch(130);// Setting the Pitch of the voice
+                voice.setRate(110);// Setting the rate of the voice
+                voice.setPitch(110);// Setting the Pitch of the voice
                 voice.setVolume(3);// Setting the volume of the voice
                 SpeakText(words);// Calling speak() method
 
@@ -31,6 +31,6 @@ public class TextToSpeechAPI {
     }
 
     public static void main(String[] args) {
-        TextToSpeechAPI temp = new TextToSpeechAPI("Heyo what's up");
+        TextToSpeechAPI temp = new TextToSpeechAPI("A text is a passage of words that conveys a set of meanings to the person who is reading it. It's a body of written work, in various forms and structures, that can be words, phrases and sentences that piece together a passage of written work. To put it as simply as possible, it is a group of words.");
     }
 }
