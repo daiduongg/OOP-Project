@@ -8414,7 +8414,7 @@
 @biên soạn
 * verb
 - To compile, to write
-=biên soạn từ điển+to compile a dictionaryDataBase
+=biên soạn từ điển+to compile a myDictionary
 
 @biên tập
 * verb
@@ -9848,7 +9848,7 @@
 - Pocket
 =nó không nộp quỹ, mà bỏ túi cả khoản tiền ấy+he did not pay the sum in, but pocket the whole of it
 - dùng phụ sau danh từ, trong một số tổ hợp) Pocket-size
-=từ điển bỏ túi+a pocket dictionaryDataBase
+=từ điển bỏ túi+a pocket myDictionary
 
 @bỏ về
 - Leave, quit
@@ -22280,7 +22280,7 @@
 * noun
 - Chief author
 =chủ biên một cuốn sách+the chief author of a book (viết tập thể)
-=chủ biên một cuốn từ điển+the chief editor of a dictionaryDataBase
+=chủ biên một cuốn từ điển+the chief editor of a myDictionary
 
 @chủ bút
 * noun
@@ -33556,7 +33556,7 @@
 
 @địa danh
 - Place name
-=Từ điển có cả địa danh+A dictionaryDataBase with place names
+=Từ điển có cả địa danh+A myDictionary with place names
 
 @địa dư
 - (cũ) Geography
@@ -48872,7 +48872,7 @@
 
 @ít nhất
 - At least
-=ít nhất thì cũng phải một năm mới xong một cuốn từ điển cỡ đó+It will take at least a year to complete a dictionaryDataBase of that size
+=ít nhất thì cũng phải một năm mới xong một cuốn từ điển cỡ đó+It will take at least a year to complete a myDictionary of that size
 
 @ít nhiều
 * adv
@@ -60676,7 +60676,7 @@ _trash
 - (ít dùng) grazing-ground, grazing-land
 
 @mục từ
-- Entry (in a dictionaryDataBase)
+- Entry (in a myDictionary)
 
 @mục tử
 - (từ cũ) Herdsman
@@ -78771,7 +78771,7 @@ _trash
 @quốc ngữ
 * noun
 - National language
-- Quốc Ngữ (national language) resided in borrowing the Latin to transcribe the Vietnamese. In the 17th century, the Western evangelists came to Vietnam to preach Christianism and used the Latin alphabet to transcribe the Vietnamese. In 1651, Alexandre Rhodes published An Nam Portuguese and Latin DictionaryDataBase. In the early 19th century, Pigneau de Béhaine and Taberd published An Nam -Latin DictionaryDataBase. Step by step, Quốc Ngữ replaced Hán (Chinese) and nôm languages to become the Vietnamese official language
+- Quốc Ngữ (national language) resided in borrowing the Latin to transcribe the Vietnamese. In the 17th century, the Western evangelists came to Vietnam to preach Christianism and used the Latin alphabet to transcribe the Vietnamese. In 1651, Alexandre Rhodes published An Nam Portuguese and Latin MyDictionary. In the early 19th century, Pigneau de Béhaine and Taberd published An Nam -Latin MyDictionary. Step by step, Quốc Ngữ replaced Hán (Chinese) and nôm languages to become the Vietnamese official language
 
 @quốc phòng
 * noun
@@ -95537,7 +95537,7 @@ _trash
 
 @từ điển
 * noun
-- dictionaryDataBase
+- myDictionary
 
 @từ điển học
 * noun
