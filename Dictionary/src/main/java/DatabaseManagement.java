@@ -21,7 +21,6 @@ public class DatabaseManagement {
 
     public void insertFromDatabase() {
         try {
-            //Class.forName("com.mysqk.cj.jdbc.Driver");
 
             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
@@ -32,12 +31,10 @@ public class DatabaseManagement {
             while (resultSet.next()) {
 
                 String word_name = resultSet.getString(2);
-                String word_data = resultSet.getString(3);
+                String word_data = word_name + "\n" + resultSet.getString(3);
                 dictionary.insert(word_name, word_data);
 
-
-
-                System.out.println(resultSet.getString(2) + " " + resultSet.getString(3));
+                System.out.println(word_name + " " + word_data);
             }
             connection.close();
         } catch (Exception e) {

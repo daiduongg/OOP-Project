@@ -1,0 +1,41 @@
+.button-play {
+    -fx-background-image: url('../gamedemo/Assets/button_new-game.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+.button-play:hover {
+    -fx-background-image: url('../gamedemo/Assets/button_new-game2.png');
+}
+
+.button-play:pressed {
+    -fx-background-image: url('../gamedemo/Assets/button_new-game2.png');
+}
+
+/*------------------------------------------------------------------------*/
+
+.button-help {
+    -fx-background-image: url('../gamedemo/Assets/button_help.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+.button-help:hover {
+    -fx-background-image: url('../gamedemo/Assets/button_help2.png');
+}
+
+.button-help:pressed {
+    -fx-background-image: url('../gamedemo/Assets/button_help2.png');
+}
+
+/*------------------------------------------------------------------------*/
+
+.button-music {
+    -fx-background-image: url('../gamedemo/Assets/unmute.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+.button-music:pressed {
+    -fx-background-image: url('../gamedemo/Assets/mute.png');
+}
