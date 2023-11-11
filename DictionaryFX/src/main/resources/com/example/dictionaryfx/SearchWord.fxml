@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="768.0" maxWidth="1024.0" minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #00008B;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionaryfx.SceneController">
+   <children>
+      <VBox maxHeight="768.0" maxWidth="110.0" minHeight="768.0" minWidth="110.0" prefHeight="768.0" prefWidth="110.0" style="-fx-background-color: #F8F8FF;">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="110.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Image/Dictionary.png" />
+               </image>
+            </ImageView>
+            <Button contentDisplay="TOP" maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" mnemonicParsing="false" onAction="#switchToSearchWord" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" text="Tra từ">
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Image/Search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button contentDisplay="TOP" maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" mnemonicParsing="false" onAction="#switchToGoogleTranslate" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" text="Google">
+               <graphic>
+                  <ImageView fitHeight="44.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Image/Google.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button contentDisplay="TOP" maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" mnemonicParsing="false" onAction="#switchToSave" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" text="Đã lưu">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Image/Save.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button contentDisplay="TOP" maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" mnemonicParsing="false" onAction="#switchToHistory" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" text="Lịch sử">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="62.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Image/History.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button contentDisplay="TOP" maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" text="Game">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Image/Game.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button contentDisplay="TOP" maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" mnemonicParsing="false" onAction="#switchToDictionary" prefHeight="100.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" text="Back">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="60.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Image/Back.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <TextField layoutX="123.0" prefHeight="37.0" prefWidth="270.0" promptText="Search">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <ListView layoutX="123.0" layoutY="52.0" prefHeight="699.0" prefWidth="251.0" />
+      <ScrollBar layoutX="356.0" layoutY="52.0" orientation="VERTICAL" prefHeight="699.0" prefWidth="18.0" />
+      <Label layoutX="429.0" layoutY="42.0" prefHeight="55.0" prefWidth="217.0" text="Nghĩa của từ" textFill="#f8f6f6">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="429.0" layoutY="106.0" prefHeight="26.0" prefWidth="28.0" text="UK" textFill="#f8f6f6">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="512.0" layoutY="106.0" prefHeight="26.0" prefWidth="28.0" text="US" textFill="#f8f6f6">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="27.0" fitWidth="28.0" layoutX="457.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/Speak.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="28.0" layoutX="540.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/Speak.png" />
+         </image>
+      </ImageView>
+      <TextArea layoutX="426.0" layoutY="153.0" prefHeight="596.0" prefWidth="543.0" />
+      <Button alignment="BOTTOM_CENTER" layoutX="775.0" layoutY="82.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="58.0" text="Lưu">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button alignment="BOTTOM_CENTER" layoutX="911.0" layoutY="82.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="58.0" text="Xóa">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button alignment="BOTTOM_CENTER" layoutX="844.0" layoutY="82.0" mnemonicParsing="false" onAction="#switchToEdit" prefHeight="55.0" prefWidth="58.0" text="Sửa">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="34.0" fitWidth="30.0" layoutX="789.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/Save.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="27.0" layoutX="860.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/Edit.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="925.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/Delete.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
