@@ -25,7 +25,10 @@ public class GoogleTransAPI {
     }
 
     public static void main(String[] args) throws IOException {
-        String text = "Hello";
+        String text = "Hello guys, Im fucking Duong";
         System.out.println(translate("en", "vi", text));
+
+
+        //String text = translate("I am programmer", "en", "vi");
     }
 }

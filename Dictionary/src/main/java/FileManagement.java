@@ -48,7 +48,7 @@ public class FileManagement {
                         if (dictionary.insert(word_name,word_data)) {
                             System.out.println(word_name + " has been inserted from file!");
                         } else {
-                            System.out.println(word_name + " cut!");
+                            System.out.println(word_name + " out!");
                         }
                     }
                     data = line + "\n";
