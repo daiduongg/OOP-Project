@@ -31,6 +31,6 @@ public class TextToSpeechAPI {
     }
 
     public static void main(String[] args) {
-        TextToSpeechAPI temp = new TextToSpeechAPI("A text is a passage of words that conveys a set of meanings to the person who is reading it. It's a body of written work, in various forms and structures, that can be words, phrases and sentences that piece together a passage of written work. To put it as simply as possible, it is a group of words.");
+        TextToSpeechAPI temp = new TextToSpeechAPI("hello fucking guys");
     }
 }
