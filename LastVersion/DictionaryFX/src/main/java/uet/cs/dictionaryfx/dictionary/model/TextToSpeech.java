@@ -1,6 +1,6 @@
 package uet.cs.dictionaryfx.dictionary.model;
 
-/*
+
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 import org.w3c.dom.Text;
@@ -43,5 +43,5 @@ public class TextToSpeech {
     }
 }
 
- */
+
 

@@ -8,7 +8,7 @@ module uet.cs.dictionaryfx {
     requires org.kordamp.ikonli.javafx;
     requires com.almasb.fxgl.all;
     requires java.sql;
-    //requires freetts;
+    requires freetts;
 
     opens uet.cs.dictionaryfx.dictionary.model to javafx.fxml;
     //opens uet.cs.dictionaryfx.dictionary.gui to javafx.fxml;
