@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.game.gui.MenuController">
+<StackPane prefHeight="768.0" prefWidth="914.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.game.gui.MenuController">
    <children>
-      <AnchorPane prefHeight="768.0" prefWidth="914.0">
+      <AnchorPane prefHeight="768.0" prefWidth="914.0" style="-fx-border-color: yellow; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 5;">
          <children>
             <ImageView fitHeight="768.0" fitWidth="914.0" pickOnBounds="true">
                <image>

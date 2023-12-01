@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.robot.Robot;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,7 +41,7 @@ public class MenuController implements Initializable {
     private Pane darkPane;
     @FXML
     private Button exitHelpButton;
-
+    private Parent newGameRoot;
 
     private static MediaPlayer mediaPlayer;
 
@@ -58,29 +59,29 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String mp3Path = getClass().getResource("Assets/menu_music.mp3").toExternalForm();
+            new Thread(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("gameGUI.fxml"));
+                    newGameRoot = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+    }
+
+    public static void startMusic() {
+        String mp3Path = MenuController.class.getResource("Assets/menu_music.mp3").toExternalForm();
         Media media = new Media(mp3Path);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setVolume(0.1);
         mediaPlayer.play();
+        System.out.println(-1);
     }
 
     public void handleNewGameButton(ActionEvent event) {
-        LoadingTask loadingTask = new LoadingTask();
-        loadingTask.setOnSucceeded(workerStateEvent -> {
-            Platform.runLater(() -> {
-                clear();
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("gameGUI.fxml"));
-                    Parent root = loader.load();
-                    StageManager.showStage(new Scene(root));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        });
-        new Thread(loadingTask).start();
+        clear();
+        StageManager.showStage(new Scene(newGameRoot));
     }
 
     public void handleHelpButton(ActionEvent event) {

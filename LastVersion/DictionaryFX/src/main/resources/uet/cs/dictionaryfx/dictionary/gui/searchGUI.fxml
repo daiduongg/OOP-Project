@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="768.0" prefWidth="914.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.dictionary.gui.SearchController">
+   <children>
+      <BorderPane layoutY="1.0" prefHeight="768.0" prefWidth="914.0">
+         <top>
+            <AnchorPane prefHeight="200.0" prefWidth="914.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" styleClass="searchPane" stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="searchField" layoutX="36.0" layoutY="104.0" onKeyPressed="#handleEnterSearchField" prefHeight="43.0" prefWidth="536.0" promptText="Search English" style="-fx-background-radius: 20;" styleClass="scroll-bar" stylesheets="@stylesheet.css">
+                     <font>
+                        <Font size="20.0" />
+                     </font></TextField>
+                  <Button fx:id="searchButton" contentDisplay="GRAPHIC_ONLY" layoutX="572.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="22.0" prefWidth="33.0" style="-fx-background-color: rgba(0,0,0,0);" text="Search">
+                     <graphic>
+                        <ImageView fitHeight="44.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Assets/search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="enViModeButton" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="36.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleEnViButton" prefHeight="48.0" prefWidth="205.0" style="-fx-background-color: #1D4F97; -fx-background-radius: 50;" text="English-Vietnamese" textFill="WHITE" underline="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="viEnModeButton" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="294.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleViEnButton" prefHeight="48.0" prefWidth="205.0" style="-fx-background-color: #1D4F97; -fx-background-radius: 50;" text="Vietnamese-English" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="177.0" fitWidth="242.0" layoutX="651.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Assets/Ybin.gif" />
+                     </image>
+                  </ImageView>
+                  <HBox alignment="CENTER" layoutX="432.0" layoutY="112.0" prefHeight="28.0" prefWidth="134.0">
+                     <children>
+                        <Button fx:id="deleteWordButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="24.0" prefWidth="23.0" style="-fx-background-color: white;" text="delete">
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-x-100.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Text fx:id="statusMode" fill="#1d2a57" strokeType="OUTSIDE" strokeWidth="0.0" text="| English" wrappingWidth="104.13677978515625">
+                           <font>
+                              <Font name="Arial" size="17.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="-1.0" />
+               </BorderPane.margin>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane prefHeight="358.0" prefWidth="914.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <TextArea fx:id="explainBox" editable="false" layoutX="32.0" layoutY="54.4" prefHeight="480.0" prefWidth="850.0" promptText="Explain word" style="-fx-background-radius: 10; -fx-background-radius: 10;" styleClass="scroll-bar" stylesheets="@stylesheet.css" text="&#10;" wrapText="true" AnchorPane.topAnchor="54.0">
+                     <font>
+                        <Font name="Arial" size="23.0" />
+                     </font>
+                  </TextArea>
+                  <HBox layoutX="681.0" layoutY="70.0" prefHeight="42.0" prefWidth="148.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="speechButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleSpeechButton" style="-fx-background-color: rgba(0,0,0,0);" text="Speak">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-audio-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="favoriteButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0);" text="Favorite">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-star-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="editButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0);" text="Edit">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-edit-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Button fx:id="cancelEditButton" contentDisplay="TEXT_ONLY" layoutX="681.0" layoutY="495.0" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0);" text="Cancel" textFill="#1d2a57">
+                     <font>
+                        <Font name="Arial Black" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="submitEditButton" contentDisplay="TEXT_ONLY" layoutX="771.0" layoutY="495.0" mnemonicParsing="false" style="-fx-background-color: rgba(0,0,0,0);" text="Submit" textFill="#1d2a57">
+                     <font>
+                        <Font name="Arial Black" size="14.0" />
+                     </font>
+                  </Button>
+                  <VBox fx:id="suggestionBox" layoutX="37.0" layoutY="-50.0" prefHeight="330.0" prefWidth="536.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <padding>
+                        <Insets bottom="3.0" left="15.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children></AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

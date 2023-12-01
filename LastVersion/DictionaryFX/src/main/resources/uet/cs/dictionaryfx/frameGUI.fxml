@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: rgb(20,42,69);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.FrameController">
+   <children>
+      <BorderPane fx:id="mainBP" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: grey;">
+         <top>
+            <Pane prefHeight="32.0" prefWidth="998.0" style="-fx-background-color: rgb(14,28,49); -fx-border-color: grey;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="408.0" layoutY="9.0" prefHeight="15.0" prefWidth="182.0" style="-fx-background-color: #375575;" text="DICTIONARY" textAlignment="CENTER">
+                     <font>
+                        <Font name="Roboto Black" size="12.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.003703703638166189" green="1.0" blue="0.933580219745636" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+               </children>
+            </Pane>
+         </top>
+         <left>
+            <AnchorPane prefHeight="768.0" prefWidth="88.0" style="-fx-background-color: rgb(19,38,63); -fx-border-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" layoutX="2.0" layoutY="193.0" prefHeight="542.0" prefWidth="90.0" spacing="30.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: rgb(55,85,117);">
+                     <children>
+                        <Button fx:id="homeButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #00CCEA; -fx-background-radius: 100;" text="Home">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@dictionary/gui/Assets/icons8-search-64%20(2).png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="googleAPIButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleGoogleAPIButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-radius: 100; -fx-background-color: #375575;" text="GoogleAPI">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@dictionary/gui/Assets/icons8-google-translate-100%20(2).png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="favoriteButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleFavoriteButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Favorite">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@dictionary/gui/Assets/icons8-heart-100%20(2).png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="gameButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleGameButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Game">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@dictionary/gui/Assets/icons8-game-100%20(2).png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Chat">
+                           <graphic>
+                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                                 <image>
+                                    <Image url="@dictionary/gui/Assets/ChatGPT.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="86.0" fitWidth="86.0" layoutX="4.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@dictionary/gui/Assets/Logo-DH-Cong-Nghe-UET-png.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </AnchorPane>
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>

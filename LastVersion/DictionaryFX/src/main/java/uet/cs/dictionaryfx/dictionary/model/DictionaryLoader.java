@@ -1,10 +1,15 @@
 package uet.cs.dictionaryfx.dictionary.model;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -84,6 +89,7 @@ public class DictionaryLoader {
                 String wordName = resultSet.getString("word");
                 String wordData = resultSet.getString("detail");
                 dictionary.insert(wordName, wordData);
+                System.out.println(wordData);
             }
 
             connection.close();
@@ -102,8 +108,68 @@ public class DictionaryLoader {
         loadFromDB(Vi_EN_DB_PATH);
     }
 
-    public static void main(String[] args) {
-        DictionaryLoader dictionaryLoader = new DictionaryLoader(new Dictionary());
-        dictionaryLoader.loadEnViFromDB();
+    public String getAudioUrl(String word) {
+        if (!word.contains(" ")) {
+            try {
+                String apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest httpRequest = HttpRequest.newBuilder()
+                        .uri(URI.create(apiUrl))
+                        .build();
+
+                HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                if (response.body().startsWith("[")) {
+                    JSONArray jsonArray = new JSONArray(response.body());
+
+                    if (jsonArray.length() > 0) {
+                        JSONObject firstEntry = jsonArray.getJSONObject(0);
+                        JSONArray phoneticsArray = firstEntry.getJSONArray("phonetics");
+
+                        for (int i = 0; i < phoneticsArray.length(); i++) {
+                            JSONObject phonetic = phoneticsArray.getJSONObject(i);
+                            String audioUrl = phonetic.optString("audio", "");
+                            if (audioUrl.trim().length() > 0) {
+                                return audioUrl;
+                            }
+                        }
+                    }
+                }
+                httpClient.close();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public boolean downloadAudio(String audioUrl, String fileName) {
+        if (audioUrl != null && fileName != null) {
+            try {
+                HttpClient httpClient = HttpClient.newHttpClient();
+                HttpRequest httpRequest = HttpRequest.newBuilder()
+                        .uri(URI.create(audioUrl))
+                        .build();
+
+                HttpResponse<InputStream> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
+                try (InputStream inputStream = response.body();
+                     FileOutputStream outputStream = new FileOutputStream(fileName)) {
+
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    inputStream.close();
+                    outputStream.close();
+                }
+                System.out.println("Audio downloaded successfully to: " + fileName);
+                httpClient.close();
+                return true;
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }

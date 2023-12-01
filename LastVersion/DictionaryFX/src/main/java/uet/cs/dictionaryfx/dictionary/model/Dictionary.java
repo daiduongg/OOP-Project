@@ -1,12 +1,63 @@
 package uet.cs.dictionaryfx.dictionary.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Dictionary {
     private Trie wordsTrie;
+    private DictionaryLoader dictionaryLoader;
+    private TextToSpeech tts;
+    private List<DictionaryLoadListener> loadListeners = new ArrayList<>();
 
-    public Dictionary() {
+
+    private DictionaryLoadListener listener;
+
+    public static enum MODE {
+        ENGLISH,
+        VIETNAMESE
+    }
+
+    public interface DictionaryLoadListener {
+        void onDictionaryLoadComplete();
+    }
+
+    public Dictionary(MODE mode) {
+        tts = new TextToSpeech();
         wordsTrie = new Trie();
+        dictionaryLoader = new DictionaryLoader(this);
+        if (mode == MODE.ENGLISH) {
+            new Thread(() -> {
+                dictionaryLoader.loadEnViFromDB();
+                notifyLoadComplete();
+            }).start();
+            new Thread(() -> {
+                dictionaryLoader.loadEnViFromFile();
+            }).start();
+        } else if (mode == MODE.VIETNAMESE) {
+            new Thread(() -> {
+                dictionaryLoader.loadViEnFromDB();
+            }).start();
+            new Thread(() -> {
+                dictionaryLoader.loadViEnFromFile();
+                notifyLoadComplete();
+            }).start();
+        } else {
+            System.out.println("error syntax");
+        }
+    }
+
+    private void notifyLoadComplete() {
+        for (DictionaryLoadListener listener : loadListeners) {
+            listener.onDictionaryLoadComplete();
+        }
+    }
+
+    public void addLoadListener(DictionaryLoadListener listener) {
+        loadListeners.add(listener);
+    }
+
+    public void removeLoadListener(DictionaryLoadListener listener) {
+        loadListeners.remove(listener);
     }
 
     public boolean insert(String wordName, String wordData) {
@@ -46,8 +97,12 @@ public class Dictionary {
         return false;
     }
 
-    public List<Word> getAllWords() {
-        return wordsTrie.getAllWords();
+    public List<String> getAllWords() {
+        List<String> list = new ArrayList<>();
+        for (Word word : wordsTrie.getAllWords()) {
+            list.add(word.getWordName());
+        }
+        return list;
     }
 
     public List<Word> getWordsHasPrefix(String prefix) {
@@ -60,5 +115,14 @@ public class Dictionary {
 
     public String getWordData(String wordName) {
         return wordsTrie.getWordData(wordName);
+    }
+
+    public boolean isLoadedWordAudio(String word) {
+        String url = dictionaryLoader.getAudioUrl(word);
+        return dictionaryLoader.downloadAudio(url, "word-audio.mp3");
+    }
+
+    public void wordSpeech(String word) {
+        tts.SpeakText(word);
     }
 }

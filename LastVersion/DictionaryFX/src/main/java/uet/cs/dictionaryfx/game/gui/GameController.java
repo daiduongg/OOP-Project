@@ -101,11 +101,25 @@ public class GameController implements Initializable {
     private boolean isMoving;
     private int step;
     private MediaPlayer mediaPlayer;
+    private Parent menuRoot;
 
 
     //Method
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /*
+        new Thread(() -> {
+            try {
+                System.out.println(-1);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("menuGUI.fxml"));
+                menuRoot = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+         */
+
         tt = new TranslateTransition(Duration.millis(1000), shipImage);
         game = new Game();
         gameLoop = new GameLoop();
@@ -209,6 +223,7 @@ public class GameController implements Initializable {
     }
 
     public void handleBackMenuButton(ActionEvent event) {
+        /*
         LoadingTask loadingTask = new LoadingTask();
         loadingTask.setOnSucceeded(workerStateEvent -> {
             Platform.runLater(() -> {
@@ -223,6 +238,17 @@ public class GameController implements Initializable {
             });
         });
         new Thread(loadingTask).start();
+
+         */
+            try {
+                System.out.println(-1);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("menuGUI.fxml"));
+                menuRoot = loader.load();
+                clear();
+                StageManager.showStage(new Scene(menuRoot));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     public void handleAnswerButton(ActionEvent event) {

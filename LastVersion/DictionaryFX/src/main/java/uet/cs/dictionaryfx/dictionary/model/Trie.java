@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Trie {
-    public static final String LOWER_CASE_ALPHABET = "aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz -";
-    public static final String UPPER_CASE_ALPHABET = "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZ -";
+    public static final String LOWER_CASE_ALPHABET = "aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz ";
+    public static final String UPPER_CASE_ALPHABET = "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZ ";
 
     public class Node {
         Map<Character, Node> children;
@@ -32,13 +32,34 @@ public class Trie {
     }
 
     private String toLowerCase(String input) {
-        StringBuilder result = new StringBuilder(input);
+        StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < input.length(); i++) {
             char current = input.charAt(i);
             int index = UPPER_CASE_ALPHABET.indexOf(current);
             if (index != -1) {
-                result.setCharAt(i, LOWER_CASE_ALPHABET.charAt(index));
+                result.append(LOWER_CASE_ALPHABET.charAt(index));
+            } else {
+                result.append(current);
+            }
+        }
+
+        return result.toString();
+    }
+
+    private String toLowerCaseWordName(String input) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            char current = input.charAt(i);
+            if (current != ' ' && !Character.isLetter(current)) {
+                continue;
+            }
+            int index = UPPER_CASE_ALPHABET.indexOf(current);
+            if (index != -1) {
+                result.append(LOWER_CASE_ALPHABET.charAt(index));
+            } else {
+                result.append(current);
             }
         }
 
@@ -62,7 +83,7 @@ public class Trie {
     }
 
     public void insert(String wordName, String wordData) {
-        wordName = toLowerCase(wordName);
+        wordName = toLowerCaseWordName(wordName);
         wordData = toLowerCase(wordData);
         Node current = root;
         for (char c : wordName.toCharArray()) {
