@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import uet.cs.dictionaryfx.dictionary.gui.SearchController;
 import uet.cs.dictionaryfx.dictionary.model.Dictionary;
 import uet.cs.dictionaryfx.dictionary.model.DictionaryManager;
 
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuController implements Initializable, Dictionary.DictionaryLoadListener {
+public class MenuController implements Initializable {
     @FXML
     private ImageView loadingImage;
     @FXML
@@ -28,34 +29,32 @@ public class MenuController implements Initializable, Dictionary.DictionaryLoadL
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Dictionary enDictionary = new Dictionary(Dictionary.MODE.ENGLISH);
-        Dictionary viDictionary = new Dictionary(Dictionary.MODE.VIETNAMESE);
+        new Thread(() -> {
+            Dictionary enDictionary = new Dictionary(Dictionary.MODE.ENGLISH);
+            DictionaryManager.setEnDictionary(enDictionary);
+            loadingData();
+        }).start();
 
-        enDictionary.addLoadListener(this);
-
-        DictionaryManager.setEnDictionary(enDictionary);
-        DictionaryManager.setViDictionary(viDictionary);
-        joinButton.setVisible(false);
-
-        /*
-        // Tạo một hẹn giờ với khoảng thời gian là 1 giây
-        Duration duration = Duration.seconds(3);
-        KeyFrame keyFrame = new KeyFrame(duration, event -> {
-            // Đặt trạng thái của joinButton thành true sau 1 giây
-            joinButton.setVisible(true);
-            loadingImage.setVisible(false);
-        });
-
-        // Tạo timeline với keyFrame và bắt đầu nó
-        Timeline timeline = new Timeline(keyFrame);
-        timeline.play();
-
-         */
+        new Thread(() -> {
+            Dictionary viDictionary = new Dictionary(Dictionary.MODE.VIETNAMESE);
+            DictionaryManager.setViDictionary(viDictionary);
+        }).start();
     }
 
-    @Override
+    public void loadingData() {
+        new Thread(() -> {
+            SceneManager.loadRootSearch();
+            SceneManager.loadRootFrame();
+            onDictionaryLoadComplete();
+        }).start();
+
+        new Thread(() -> {
+            SceneManager.loadRootGame();
+        }).start();
+    }
+
+    //@Override
     public void onDictionaryLoadComplete() {
-        // Cập nhật giao diện người dùng khi dữ liệu đã được tải xong
         Platform.runLater(() -> {
             loadingImage.setVisible(false);
             joinButton.setVisible(true);
@@ -63,13 +62,7 @@ public class MenuController implements Initializable, Dictionary.DictionaryLoadL
     }
 
     public void handleJoinButton(ActionEvent event)  {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("frameGUI.fxml"));
-            Parent root = loader.load();
-            StageManager.showStage(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        StageManager.showStage(new Scene(SceneManager.getRootFrame()));
     }
 
 }

@@ -31,34 +31,16 @@ public class Trie {
         return UPPER_CASE_ALPHABET.charAt(index);
     }
 
-    private String toLowerCase(String input) {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < input.length(); i++) {
-            char current = input.charAt(i);
-            int index = UPPER_CASE_ALPHABET.indexOf(current);
-            if (index != -1) {
-                result.append(LOWER_CASE_ALPHABET.charAt(index));
-            } else {
-                result.append(current);
-            }
-        }
-
-        return result.toString();
-    }
-
     private String toLowerCaseWordName(String input) {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < input.length(); i++) {
             char current = input.charAt(i);
-            if (current != ' ' && !Character.isLetter(current)) {
-                continue;
-            }
+
             int index = UPPER_CASE_ALPHABET.indexOf(current);
             if (index != -1) {
                 result.append(LOWER_CASE_ALPHABET.charAt(index));
-            } else {
+            } else if (LOWER_CASE_ALPHABET.indexOf(current) != 1) {
                 result.append(current);
             }
         }
@@ -67,7 +49,7 @@ public class Trie {
     }
 
     private Node search(String wordName) {
-        wordName = toLowerCase(wordName);
+        wordName = toLowerCaseWordName(wordName);
         Node current = root;
         for (char c : wordName.toCharArray()) {
             if (!current.children.containsKey(c)) {
@@ -84,7 +66,6 @@ public class Trie {
 
     public void insert(String wordName, String wordData) {
         wordName = toLowerCaseWordName(wordName);
-        wordData = toLowerCase(wordData);
         Node current = root;
         for (char c : wordName.toCharArray()) {
             current.children.putIfAbsent(c, new Node());
@@ -129,12 +110,12 @@ public class Trie {
     }
 
     public void delete(String wordName) {
-        wordName = toLowerCase(wordName);
+        wordName = toLowerCaseWordName(wordName);
         delete(root, wordName, 0);
     }
 
     public String getWordData(String wordName) {
-        wordName = toLowerCase(wordName);
+        wordName = toLowerCaseWordName(wordName);
         Node current = search(wordName);
         if (current != null) {
             return current.wordData;
@@ -167,7 +148,7 @@ public class Trie {
     }
 
     public List<Word> getWordsHasPrefix(String prefix) {
-        prefix = toLowerCase(prefix);
+        prefix = toLowerCaseWordName(prefix);
         Node current = search(prefix);
         List<Word> sortedWords = new ArrayList<>();
         if (current != null) {
@@ -178,7 +159,6 @@ public class Trie {
 
     public boolean editWord(String wordName, String wordData) {
         wordName = wordName.toLowerCase();
-        wordData = toLowerCase(wordData);
         Node current = search(wordName);
         if (current != null) {
             current.wordData = wordData;

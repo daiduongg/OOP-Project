@@ -1,5 +1,8 @@
 package uet.cs.dictionaryfx.dictionary.model;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,8 +13,10 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 
 public class DictionaryLoader {
@@ -21,9 +26,28 @@ public class DictionaryLoader {
     public static final String EN_VI_FILE_PATH = "/uet/cs/dictionaryfx/dictionary/model/Assets/En-Vi.txt";
     public static final String EN_VI_DB_PATH = "uet/cs/dictionaryfx/dictionary/model/Assets/envidb.db";
     public static final String Vi_EN_DB_PATH = "uet/cs/dictionaryfx/dictionary/model/Assets/viendb.db";
+    public static final String LOWER_CASE_ALPHABET = "aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịjklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvwxyỳỷỹýỵz ";
+    public static final String UPPER_CASE_ALPHABET = "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬBCDĐEÈẺẼÉẸÊỀỂỄẾỆFGHIÌỈĨÍỊJKLMNOÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢPQRSTUÙỦŨÚỤƯỪỬỮỨỰVWXYỲỶỸÝỴZ ";
 
     public DictionaryLoader(Dictionary dictionary) {
         this.dictionary = dictionary;
+    }
+
+    private String toLowerCaseWordName(String input) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            char current = input.charAt(i);
+
+            int index = UPPER_CASE_ALPHABET.indexOf(current);
+            if (index != -1) {
+                result.append(LOWER_CASE_ALPHABET.charAt(index));
+            } else if (LOWER_CASE_ALPHABET.indexOf(current) != 1) {
+                result.append(current);
+            }
+        }
+
+        return result.toString();
     }
 
     private void loadFromFile(String filePath) {
@@ -50,7 +74,7 @@ public class DictionaryLoader {
 
                         String wordName = data.substring(1, index).trim();
                         String wordData = data;
-                        dictionary.insert(wordName,wordData);
+                        dictionary.insertWordFromDB(wordName,wordData);
                     }
                     data = line.trim() + "\n";
                 } else {
@@ -76,7 +100,6 @@ public class DictionaryLoader {
         try {
             Path resourcesPath = Paths.get("src", "main", "resources");
             Path dbPath = resourcesPath.resolve(filePath);
-            URL resourcesURL = dbPath.toUri().toURL();
 
             String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
             Connection connection = DriverManager.getConnection(jdbcUrl);
@@ -88,16 +111,252 @@ public class DictionaryLoader {
             while (resultSet.next()) {
                 String wordName = resultSet.getString("word");
                 String wordData = resultSet.getString("detail");
-                dictionary.insert(wordName, wordData);
-                System.out.println(wordData);
+                dictionary.insertWordFromDB(wordName, wordData);
+            }
+
+            sql = "SELECT * FROM tbl_history";
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                String wordName = resultSet.getString("word");
+                dictionary.addHistoryWordFromDB(toLowerCaseWordName(wordName));
+            }
+
+            sql = "SELECT * FROM tbl_favorite";
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                String wordName = resultSet.getString("word");
+                dictionary.addFavoriteWordFromDB(wordName);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void insertWordToDB(String filePath, Word word) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            StringBuilder sql = new StringBuilder("INSERT INTO tbl_edict (word, detail) VALUES (?, ?)");
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql.toString())) {
+                String wordName = toLowerCaseWordName(word.getWordName()).trim();
+                String wordData = word.getWordData().trim();
+
+                preparedStatement.setString(1, wordName);
+                preparedStatement.setString(2, wordData);
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (MalformedURLException e) {
+        }
+    }
+
+    private void removeWordFromDB(String filePath, String wordName) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            String sql = "DELETE FROM tbl_edict WHERE word = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, toLowerCaseWordName(wordName));
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            connection.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void insertWordToHistoryDB(String filePath, String wordName) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            String sql = "INSERT INTO tbl_history (word) VALUES ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, toLowerCaseWordName(wordName).trim());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeWordFromHistoryDB(String filePath, String wordName) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            String sql = "DELETE FROM tbl_history WHERE word = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, toLowerCaseWordName(wordName).trim());
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void insertWordToFavoriteDB(String filePath, String wordName) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            String sql = "INSERT INTO tbl_favorite (word) VALUES (?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, toLowerCaseWordName(wordName).trim());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeWordFromFavoriteDB(String filePath, String wordName) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            String sql = "DELETE FROM tbl_favorite WHERE word = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, toLowerCaseWordName(wordName).trim());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateWordToDB(String filePath, String wordName, String wordData) {
+        try {
+            Path resourcesPath = Paths.get("src", "main", "resources");
+            Path dbPath = resourcesPath.resolve(filePath);
+
+            String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+
+            String sql = "UPDATE tbl_edict SET detail = ? WHERE word = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, wordData);
+                preparedStatement.setString(2, toLowerCaseWordName(wordName.trim()));
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateEnViWordFromDB (String wordName, String wordData) {
+        updateWordToDB(EN_VI_DB_PATH, wordName, wordData);
+    }
+
+    public void updateViEnWordFromDB (String wordName, String wordData) {
+        updateWordToDB(Vi_EN_DB_PATH, wordName, wordData);
+    }
+
+    public void removeEnViWordFromDB(String word) {
+        removeWordFromDB(EN_VI_DB_PATH, word);
+    }
+
+    public void removeViEnWordFromDB(String word) {
+        removeWordFromDB(Vi_EN_DB_PATH, word);
+    }
+
+    public void removeEnViWordFromHistoryDB(String word) {
+        removeWordFromHistoryDB(EN_VI_DB_PATH, word);
+    }
+
+    public void removeViEnWordFromHistoryDB(String word) {
+        removeWordFromHistoryDB(Vi_EN_DB_PATH, word);
+    }
+
+    public void removeEnViWordFromFavoriteDB(String word) {
+        removeWordFromFavoriteDB(EN_VI_DB_PATH, word);
+    }
+
+    public void removeViEnWordFromFavoriteDB(String word) {
+        removeWordFromFavoriteDB(Vi_EN_DB_PATH, word);
+    }
+
+    public void insertEnViWordToDB(Word word) {
+        insertWordToDB(EN_VI_DB_PATH, word);
+    }
+
+    public void insertViEnWordToDB(Word word) {
+        insertWordToDB(Vi_EN_DB_PATH, word);
+    }
+
+    public void insertEnViWordToFavoriteDB(String word) {
+        insertWordToFavoriteDB(EN_VI_DB_PATH, word);
+    }
+
+    public void insertViEnWordToFavoriteDB(String word) {
+        insertWordToFavoriteDB(Vi_EN_DB_PATH, word);
+    }
+
+    public void insertEnViWordToHistoryDB(String word) {
+        insertWordToHistoryDB(EN_VI_DB_PATH, word);
+    }
+
+    public void insertViEnWordToHistoryDB(String word) {
+        insertWordToHistoryDB(Vi_EN_DB_PATH, word);
     }
 
     public void loadEnViFromDB() {
@@ -108,8 +367,8 @@ public class DictionaryLoader {
         loadFromDB(Vi_EN_DB_PATH);
     }
 
-    public String getAudioUrl(String word) {
-        if (!word.contains(" ")) {
+    public String getEnAudioURL(String word) {
+        if (word != null && !word.contains(" ")) {
             try {
                 String apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
                 HttpClient httpClient = HttpClient.newHttpClient();
@@ -142,7 +401,8 @@ public class DictionaryLoader {
         return null;
     }
 
-    public boolean downloadAudio(String audioUrl, String fileName) {
+    public boolean downloadEnAudio(String audioUrl) {
+        String fileName = "en-word-audio.mp3";
         if (audioUrl != null && fileName != null) {
             try {
                 HttpClient httpClient = HttpClient.newHttpClient();
@@ -172,4 +432,39 @@ public class DictionaryLoader {
         }
         return false;
     }
+
+    public boolean downloadViAudio(String word) throws IOException {
+        String fileName = "vi-word-audio.wav";
+        if (word != null) {
+            String apiUrl = "https://viettelgroup.ai/voice/api/tts/v1/rest/syn";
+            String datajson = "{\"text\":\"" + word + "\"," +
+                    "\"voice\":\"doanngocle\"," +
+                    "\"id\":\"3\"," +
+                    "\"without_filter\":false," +
+                    "\"speed\":1.0," +
+                    "\"tts_return_option\":2}";
+
+            org.apache.http.client.HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpPost request = new HttpPost(apiUrl);
+            StringEntity body = new StringEntity(datajson, "UTF-8");
+            request.addHeader("content-type", "application/json;charset=UTF-8");
+            request.addHeader("token", "Cvdxhq23G9OaaYk7YdwbJu5N17PLpztFgs12WNKDQ3VW0LRGgcWGWQQ9A6fifXBd");
+            request.setEntity(body);
+
+            org.apache.http.HttpResponse response = httpClient.execute(request);
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                try (InputStream inputStream = response.getEntity().getContent()) {
+                    Path outputPath = Path.of(fileName);
+                    Files.copy(inputStream, outputPath, StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println("Dữ liệu âm thanh đã được tải thành công vào tệp " + fileName);
+                    return true;
+                }
+            } else {
+                System.err.println("Lỗi: " + response.getStatusLine().toString());
+            }
+        }
+        return false;
+    }
+
 }

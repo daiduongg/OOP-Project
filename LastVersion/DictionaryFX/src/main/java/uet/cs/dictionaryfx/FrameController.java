@@ -7,7 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import uet.cs.dictionaryfx.game.gui.MenuController;
+import uet.cs.dictionaryfx.game.gui.GameMenuController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class FrameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            loadRoot();
+            //loadRoot();
             setCenterToHome();
             status = STATUS.HOME;
     }
@@ -45,7 +45,7 @@ public class FrameController implements Initializable {
     private void loadRoot() {
         new Thread(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("game/gui/menuGUI.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("game/gui/gameMenuGUI.fxml"));
                 rootGame = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -76,7 +76,7 @@ public class FrameController implements Initializable {
 
     public void handleGameButton(ActionEvent event) {
         if (status != STATUS.GAME) {
-            MenuController.startMusic();
+            GameMenuController.startMusic();
             setCenterToGame();
             status = STATUS.GAME;
         }
@@ -84,10 +84,11 @@ public class FrameController implements Initializable {
 
 
     public void setCenterToHome() {
-        mainBP.setCenter(rootHome);
+        mainBP.setCenter(SceneManager.getRootSearch());
     }
 
     public void setCenterToGame() {
-        mainBP.setCenter(rootGame);
+        mainBP.setCenter(SceneManager.getRootGame());
     }
+    public void setCenterToGameMenu() {mainBP.setCenter(SceneManager.getRootGameMenu());}
 }

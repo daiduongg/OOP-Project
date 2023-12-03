@@ -11,6 +11,8 @@ module uet.cs.dictionaryfx {
     requires freetts;
     requires java.net.http;
     requires org.json;
+    requires org.apache.httpcomponents.httpclient;
+    requires org.apache.httpcomponents.httpcore;
 
     opens uet.cs.dictionaryfx.dictionary.model to javafx.fxml;
     opens uet.cs.dictionaryfx.dictionary.gui to javafx.fxml;

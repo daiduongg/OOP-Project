@@ -1,100 +1,36 @@
 package uet.cs.dictionaryfx.dictionary.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public class Dictionary {
     private Trie wordsTrie;
     private DictionaryLoader dictionaryLoader;
     private TextToSpeech tts;
-    private List<DictionaryLoadListener> loadListeners = new ArrayList<>();
-
-
-    private DictionaryLoadListener listener;
+    private Set<String> historyWord = new LinkedHashSet<>();
+    private Set<String> favoriteWord = new TreeSet<>();
+    private MODE mode;
 
     public static enum MODE {
         ENGLISH,
         VIETNAMESE
     }
 
-    public interface DictionaryLoadListener {
-        void onDictionaryLoadComplete();
-    }
-
-    public Dictionary(MODE mode) {
+    public Dictionary(MODE mode_) {
+        mode = mode_;
         tts = new TextToSpeech();
         wordsTrie = new Trie();
         dictionaryLoader = new DictionaryLoader(this);
         if (mode == MODE.ENGLISH) {
-            new Thread(() -> {
-                dictionaryLoader.loadEnViFromDB();
-                notifyLoadComplete();
-            }).start();
-            new Thread(() -> {
-                dictionaryLoader.loadEnViFromFile();
-            }).start();
+            dictionaryLoader.loadEnViFromDB();
+            dictionaryLoader.loadEnViFromFile();
         } else if (mode == MODE.VIETNAMESE) {
-            new Thread(() -> {
-                dictionaryLoader.loadViEnFromDB();
-            }).start();
-            new Thread(() -> {
-                dictionaryLoader.loadViEnFromFile();
-                notifyLoadComplete();
-            }).start();
+            dictionaryLoader.loadViEnFromDB();
+            dictionaryLoader.loadViEnFromFile();
+
         } else {
             System.out.println("error syntax");
         }
-    }
-
-    private void notifyLoadComplete() {
-        for (DictionaryLoadListener listener : loadListeners) {
-            listener.onDictionaryLoadComplete();
-        }
-    }
-
-    public void addLoadListener(DictionaryLoadListener listener) {
-        loadListeners.add(listener);
-    }
-
-    public void removeLoadListener(DictionaryLoadListener listener) {
-        loadListeners.remove(listener);
-    }
-
-    public boolean insert(String wordName, String wordData) {
-        if (wordName == null || wordData == null) {
-            return false;
-        }
-
-        try {
-            if (wordsTrie.containsWord(wordName)) {
-                throw new Exception("This word already exists in the dictionary: " + wordName);
-            } else {
-                wordsTrie.insert(wordName, wordData);
-                System.out.println("/" + wordName + "/" + " has been inserted from file!");
-                return true;
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return false;
-    }
-
-    public boolean removeWord(String wordName) {
-        if (wordName == null) {
-            return false;
-        }
-        try {
-            if (!wordsTrie.containsWord(wordName)) {
-                throw new Exception("This word does not exist in the dictionary!");
-            } else {
-                wordsTrie.delete(wordName);
-                System.out.println("/" + wordName + "/" + " has been removed!");
-                return true;
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return false;
     }
 
     public List<String> getAllWords() {
@@ -109,20 +45,187 @@ public class Dictionary {
         return wordsTrie.getWordsHasPrefix(prefix);
     }
 
-    public boolean editWordData(String wordName, String new_wordData) {
-        return wordsTrie.editWord(wordName, new_wordData);
-    }
-
     public String getWordData(String wordName) {
         return wordsTrie.getWordData(wordName);
     }
 
     public boolean isLoadedWordAudio(String word) {
-        String url = dictionaryLoader.getAudioUrl(word);
-        return dictionaryLoader.downloadAudio(url, "word-audio.mp3");
+        try {
+            if (mode == MODE.ENGLISH) {
+                String url = dictionaryLoader.getEnAudioURL(word);
+                return dictionaryLoader.downloadEnAudio(url);
+            } else {
+                return dictionaryLoader.downloadViAudio(word);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void wordSpeech(String word) {
         tts.SpeakText(word);
+    }
+
+    public List<String> getHistoryWordList() {
+        List<String> result = new ArrayList<>();
+        for (String word : historyWord) {
+            result.add(word);
+        }
+        return result;
+    }
+
+    public List<String> getFavoriteWordList() {
+        List<String> result = new ArrayList<>();
+        for (String word : favoriteWord) {
+            result.add(word);
+        }
+        return result;
+    }
+
+    public void addFavoriteWordFromDB(String wordName) {
+        favoriteWord.add(wordName);
+    }
+
+    public boolean isExistInFavoriteList(String wordName) {;
+        return favoriteWord.contains(wordName);
+    }
+    public boolean addFavoriteWord(String wordName) {
+        if (isExistInFavoriteList(wordName)) {
+            return false;
+        }
+
+        if (mode == MODE.ENGLISH) {
+            dictionaryLoader.insertEnViWordToFavoriteDB(wordName);
+        } else {
+            dictionaryLoader.insertViEnWordToFavoriteDB(wordName);
+        }
+
+        favoriteWord.add(wordName);
+        return true;
+    }
+
+    public void addHistoryWord(String wordName) {
+        if (mode == MODE.ENGLISH) {
+            dictionaryLoader.insertEnViWordToHistoryDB(wordName);
+        } else {
+            dictionaryLoader.insertViEnWordToHistoryDB(wordName);
+        }
+
+        if (historyWord.contains(wordName)) {
+            historyWord.remove(wordName);
+        }
+        historyWord.add(wordName);
+    }
+
+    public void addHistoryWordFromDB(String wordName) {
+        historyWord.add(wordName);
+    }
+
+    public void removeFavoriteWord(String wordName) {
+        if (favoriteWord.contains(wordName)) {
+            favoriteWord.remove(wordName);
+        } else {
+            return;
+        }
+
+        if (mode == MODE.ENGLISH) {
+            dictionaryLoader.removeEnViWordFromFavoriteDB(wordName);
+        } else {
+            dictionaryLoader.removeViEnWordFromFavoriteDB(wordName);
+        }
+    }
+
+    public void removeHistoryWord(String wordName) {
+        if (historyWord.contains(wordName)) {
+            historyWord.remove(wordName);
+        } else {
+            if (mode == MODE.ENGLISH) {
+                dictionaryLoader.removeEnViWordFromHistoryDB(wordName);
+            } else {
+                dictionaryLoader.removeViEnWordFromHistoryDB(wordName);
+            }
+        }
+    }
+
+    public boolean editWordData(String wordName, String new_wordData) {
+        if (mode == MODE.ENGLISH) {
+            dictionaryLoader.updateEnViWordFromDB(wordName, new_wordData);
+        } else {
+            dictionaryLoader.updateViEnWordFromDB(wordName, new_wordData);
+        }
+
+        return wordsTrie.editWord(wordName, new_wordData);
+    }
+
+    public boolean insertWord(String wordName, String wordData) {
+        if (wordName == null || wordData == null) {
+            return false;
+        }
+
+        try {
+            if (wordsTrie.containsWord(wordName)) {
+                throw new Exception("This word already exists in the dictionary: " + wordName);
+            }
+
+            if (mode == MODE.ENGLISH) {
+                dictionaryLoader.insertEnViWordToDB(new Word(wordName, wordData));
+            } else {
+                dictionaryLoader.insertViEnWordToDB(new Word(wordName, wordData));
+            }
+
+            wordsTrie.insert(wordName, wordData);
+            //System.out.println("/" + wordName + "/" + " has been inserted from file!");
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean insertWordFromDB(String wordName, String wordData) {
+        if (wordName == null || wordData == null) {
+            return false;
+        }
+
+        try {
+            if (wordsTrie.containsWord(wordName)) {
+                //throw new Exception("This word already exists in the dictionary: " + wordName);
+            } else {
+                wordsTrie.insert(wordName, wordData);
+                //System.out.println("/" + wordName + "/" + " has been inserted from file!");
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean removeWord(String wordName) {
+        if (wordName == null) {
+            return false;
+        }
+        try {
+            if (mode == MODE.ENGLISH) {
+                dictionaryLoader.removeEnViWordFromDB(wordName);
+                dictionaryLoader.removeEnViWordFromFavoriteDB(wordName);
+                dictionaryLoader.removeEnViWordFromHistoryDB(wordName);
+            } else {
+                dictionaryLoader.removeViEnWordFromDB(wordName);
+                dictionaryLoader.removeViEnWordFromFavoriteDB(wordName);
+                dictionaryLoader.removeEnViWordFromHistoryDB(wordName);
+            }
+            if (!wordsTrie.containsWord(wordName)) {
+                throw new Exception("This word does not exist in the dictionary!");
+            } else {
+                wordsTrie.delete(wordName);
+                System.out.println("/" + wordName + "/" + " has been removed!");
+                return true;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
     }
 }

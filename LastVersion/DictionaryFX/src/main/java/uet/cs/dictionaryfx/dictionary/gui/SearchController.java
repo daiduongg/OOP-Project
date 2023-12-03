@@ -3,9 +3,12 @@ package uet.cs.dictionaryfx.dictionary.gui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -13,20 +16,17 @@ import uet.cs.dictionaryfx.dictionary.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SearchController implements Initializable {
-    private static Dictionary enViDictionary;
-    private static Dictionary viEnDictionary;
+    private Dictionary dictionary;
     private Dictionary.MODE mode;
     @FXML
     private Button enViModeButton;
@@ -35,7 +35,7 @@ public class SearchController implements Initializable {
     @FXML
     private Button searchButton;
     @FXML
-    private Button deleteWordButton;
+    private Button clearSearchButton;
     @FXML
     private Button speechButton;
     @FXML
@@ -51,40 +51,76 @@ public class SearchController implements Initializable {
     @FXML
     private TextField searchField;
     @FXML
-    private TextArea explainBox;
+    private TextArea explainField;
     @FXML
     private VBox suggestionBox;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button deleteButton;
+    @FXML
+    private Pane darkPaneTop;
+    @FXML
+    private Pane darkPaneCenter;
+    @FXML
+    private Pane addWordPane;
+    @FXML
+    private Button cancelAddButton;
+    @FXML
+    private Button submitAddButton;
+    @FXML
+    private TextArea wordNameAddField;
+    @FXML
+    private TextArea wordDataAddField;
+    @FXML
+    private ImageView favoriteWordImage;
     private boolean isWordAudioReady;
     private MediaPlayer mediaPlayer;
     private String lastWordSearch;
+    private final Image FAVORITE_IMAGE = new Image(getClass().getResourceAsStream("Assets/favorite.png"));
+    private final Image UNFAVORITE_IMAGE = new Image(getClass().getResourceAsStream("Assets/unfavorite.png"));
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         isWordAudioReady = false;
-        explainBox.setStyle("-fx-text-fill: rgb(0, 51, 50); -fx-font-size: 23; -fx-font-family: 'Arial';");
-        enViDictionary = DictionaryManager.getEnDictionary();
-        viEnDictionary = DictionaryManager.getViDictionary();
+        explainField.setStyle("-fx-text-fill: rgb(0, 51, 50); -fx-font-size: 23; -fx-font-family: 'Arial';");
         cancelEditButton.setVisible(false);
         submitEditButton.setVisible(false);
         turnOnEnViMode();
-        handleSuggestionBox();
         checkMouseClicked();
     }
 
     public void turnOnEnViMode() {
+        lastWordSearch = null;
         statusMode.setText("| English");
         enViModeButton.setUnderline(true);
         viEnModeButton.setUnderline(false);
         mode = Dictionary.MODE.ENGLISH;
+        if (dictionary != null) {
+            DictionaryManager.setViDictionary(dictionary);
+        }
+        searchField.setText(null);
+        explainField.setText(null);
+        dictionary = DictionaryManager.getEnDictionary();
+        handleSuggestionBox();
     }
 
     public void turnOnViEnMode() {
+        lastWordSearch = null;
         statusMode.setText("| Vietnamese");
         enViModeButton.setUnderline(false);
         viEnModeButton.setUnderline(true);
         mode = Dictionary.MODE.VIETNAMESE;
+        searchField.setText(null);
+        explainField.setText(null);
+        if (dictionary != null) {
+            DictionaryManager.setEnDictionary(dictionary);
+        }
+        dictionary = DictionaryManager.getViDictionary();
+        handleSuggestionBox();
     }
+
     public void handleEnViButton(ActionEvent event) {
         turnOnEnViMode();
     }
@@ -102,25 +138,34 @@ public class SearchController implements Initializable {
     }
 
     public void searchAndShow(String wordName) {
+        if (wordName == null) {
+            String error = new String("Your search terms did not match any entries.");
+            explainField.setText(error);
+            isWordAudioReady = false;
+            lastWordSearch = null;
+            return;
+        }
+        if (dictionary.isExistInFavoriteList(wordName)) {
+            favoriteWordImage.setImage(FAVORITE_IMAGE);
+        } else {
+            favoriteWordImage.setImage(UNFAVORITE_IMAGE);
+        }
         lastWordSearch = wordName;
         String wordData;
-        if (mode == Dictionary.MODE.ENGLISH) {
-            wordData = enViDictionary.getWordData(wordName);
-            if (wordData != null) {
-                //isWordAudioReady = enViDictionary.isLoadedWordAudio(wordName);
-                new Thread(() -> {
-                    isWordAudioReady = enViDictionary.isLoadedWordAudio(wordName);
-                    // You can perform additional actions after loading audio if needed
-                }).start();
-            }
-        } else {
-            wordData = viEnDictionary.getWordData(wordName);
-        }
+        wordData = dictionary.getWordData(wordName);
         if (wordData != null) {
-            explainBox.setText(wordData);
+            //isWordAudioReady = enViDictionary.isLoadedWordAudio(wordName);
+            new Thread(() -> {
+                isWordAudioReady = dictionary.isLoadedWordAudio(wordName);
+                // You can perform additional actions after loading audio if needed
+            }).start();
+        }
+
+        if (wordData != null) {
+            explainField.setText(wordData);
         } else {
             String error = new String("Your search terms did not match any entries.");
-            explainBox.setText(error);
+            explainField.setText(error);
             isWordAudioReady = false;
         }
         suggestionBox.setVisible(false);
@@ -143,7 +188,7 @@ public class SearchController implements Initializable {
     }
 
     public void handleSuggestionBox() {
-        List<String> wordslist = enViDictionary.getAllWords();
+        List<String> wordslist = dictionary.getAllWords();
         ObservableList<String> suggestedKeyWords = FXCollections.observableList(wordslist);
         FilteredList<String> filteredSuggestions = new FilteredList<>(suggestedKeyWords, s -> true);
         ListView<String> suggestionListView = new ListView<>(filteredSuggestions);
@@ -152,19 +197,21 @@ public class SearchController implements Initializable {
                                     "-fx-fill: #1d2a57;");
         suggestionBox.setVisible(false);
         searchField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                filteredSuggestions.setPredicate(keyword ->
-                        keyword.toLowerCase().startsWith(newValue.toLowerCase()));
+            if (newValue != null) {
+                if (!newValue.isEmpty()) {
+                    filteredSuggestions.setPredicate(keyword ->
+                            keyword.toLowerCase().startsWith(newValue.toLowerCase()));
 
-                if (!filteredSuggestions.isEmpty()) {
-                    suggestionBox.getChildren().clear();
-                    suggestionBox.getChildren().add(suggestionListView);
-                    suggestionBox.setVisible(true);
+                    if (!filteredSuggestions.isEmpty()) {
+                        suggestionBox.getChildren().clear();
+                        suggestionBox.getChildren().add(suggestionListView);
+                        suggestionBox.setVisible(true);
+                    } else {
+                        suggestionBox.setVisible(false);
+                    }
                 } else {
                     suggestionBox.setVisible(false);
                 }
-            } else {
-                suggestionBox.setVisible(false);
             }
         }));
 
@@ -176,34 +223,215 @@ public class SearchController implements Initializable {
     }
 
     public void handleSpeechButton(ActionEvent event) {
-        if (!explainBox.getText().isEmpty()) {
-            if (mode == Dictionary.MODE.ENGLISH) {
-                if (isWordAudioReady) {
-                    try {
-                        if (mediaPlayer == null || mediaPlayer.getStatus() != MediaPlayer.Status.PLAYING) {
-                            File file = new File("word-audio.mp3");
-                            String mediaPath = file.toURI().toURL().toString();
-                            System.out.println(mediaPath);
-                            Media media = new Media(mediaPath);
-                            MediaPlayer mediaPlayer = new MediaPlayer(media);
-                            mediaPlayer.play();
-                            mediaPlayer.setOnEndOfMedia(() -> {
-                                System.out.println("End of media");
-                                mediaPlayer.stop();
-                            });
+        if (lastWordSearch == null || explainField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please choose a word !");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            if (isWordAudioReady) {
+                try {
+                    if (mediaPlayer == null || mediaPlayer.getStatus() != MediaPlayer.Status.PLAYING) {
+                        if (mediaPlayer != null) {
+                            mediaPlayer.stop();
+                            mediaPlayer.dispose();
                         }
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                        String fileName;
+                        if (mode == Dictionary.MODE.ENGLISH) {
+                            fileName = "en-word-audio.mp3";
+                        } else {
+                            fileName = "vi-word-audio.wav";
+                        }
+                        File file = new File(fileName);
+                        String mediaPath = file.toURI().toURL().toString();
+                        System.out.println(mediaPath);
+                        Media media = new Media(mediaPath);
+                        mediaPlayer = new MediaPlayer(media);
+                        mediaPlayer.play();
+                        mediaPlayer.setOnEndOfMedia(() -> {
+                            System.out.println("End of media");
+                            mediaPlayer.stop();
+                            //mediaPlayer.dispose();
+                        });
                     }
-                } else if (lastWordSearch != null) {
-                    enViDictionary.wordSpeech(lastWordSearch);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 }
+            } else if (mode == Dictionary.MODE.ENGLISH && lastWordSearch != null) {
+                dictionary.wordSpeech(lastWordSearch);
             }
         }
     }
 
-    public static void close() {
-        DictionaryManager.setEnDictionary(enViDictionary);
-        DictionaryManager.setViDictionary(viEnDictionary);
+    public void handleClearWordButton(ActionEvent event) {
+        searchField.setText(null);
+        suggestionBox.setVisible(false);
+    }
+
+    public void handleEditButton(ActionEvent event) {
+        if (lastWordSearch == null || explainField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please choose a word !");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else if (!explainField.getText().isEmpty()) {
+            submitEditButton.setVisible(true);
+            cancelEditButton.setVisible(true);
+            speechButton.setVisible(false);
+            favoriteButton.setVisible(false);
+            deleteButton.setVisible(false);
+            addButton.setVisible(false);
+            darkPaneTop.setVisible(true);
+            explainField.setEditable(true);
+        }
+    }
+
+    public void handleCancelEditButton(ActionEvent event) {
+        String wordData = dictionary.getWordData(lastWordSearch);
+        String newWordData = explainField.getText();
+        if (!wordData.equals(newWordData)) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Your changes will not be saved");
+            alert.setContentText("Do you want to continue canceling?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                explainField.setText(wordData);
+                submitEditButton.setVisible(false);
+                cancelEditButton.setVisible(false);
+                speechButton.setVisible(true);
+                favoriteButton.setVisible(true);
+                deleteButton.setVisible(true);
+                addButton.setVisible(true);
+                darkPaneTop.setVisible(false);
+                explainField.setEditable(false);
+            }
+        }
+    }
+
+    public void handleSubmitEditButton(ActionEvent event) {
+        String wordData = dictionary.getWordData(lastWordSearch);
+        String newWordData = explainField.getText();
+        if (!wordData.equals(newWordData)) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Update successful !");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+        dictionary.editWordData(lastWordSearch, newWordData);
+        submitEditButton.setVisible(false);
+        cancelEditButton.setVisible(false);
+        speechButton.setVisible(true);
+        favoriteButton.setVisible(true);
+        deleteButton.setVisible(true);
+        addButton.setVisible(true);
+        darkPaneTop.setVisible(false);
+        explainField.setEditable(false);
+    }
+
+    public void handleAddButton(ActionEvent event) {
+        darkPaneCenter.setVisible(true);
+        darkPaneTop.setVisible(true);
+        addWordPane.setVisible(true);
+    }
+
+    public void handleCancelAddButton(ActionEvent event) {
+        String wordName = wordNameAddField.getText();
+        String wordData = wordDataAddField.getText();
+
+        if (!wordData.equals("") || !wordName.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Your changes will not be saved");
+            alert.setContentText("Do you want to continue canceling?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                wordNameAddField.setText("");
+                wordDataAddField.setText("");
+                darkPaneTop.setVisible(false);
+                darkPaneCenter.setVisible(false);
+                addWordPane.setVisible(false);
+            }
+        } else {
+            wordNameAddField.setText("");
+            wordDataAddField.setText("");
+            darkPaneTop.setVisible(false);
+            darkPaneCenter.setVisible(false);
+            addWordPane.setVisible(false);
+        }
+    }
+
+    public void handleSubmitAddButton(ActionEvent event) {
+        String wordName = wordNameAddField.getText();
+        String wordData = wordDataAddField.getText();
+        if (wordName.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Word cannot be empty !");
+            Optional<ButtonType> result = alert.showAndWait();
+            return;
+        }
+
+        if (wordData.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Explanation cannot be empty !");
+            Optional<ButtonType> result = alert.showAndWait();
+            return;
+        }
+
+        if (!dictionary.insertWord(wordName, wordData)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("This word already exists in the dictionary !");
+            Optional<ButtonType> result = alert.showAndWait();
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Update successful !");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        new Thread(() -> {
+            handleSuggestionBox();
+        }).start();
+
+        wordNameAddField.setText("");
+        wordDataAddField.setText("");
+        darkPaneTop.setVisible(false);
+        darkPaneCenter.setVisible(false);
+        addWordPane.setVisible(false);
+    }
+
+    public void handleDeleteWordButton(ActionEvent event) {
+        if (lastWordSearch == null || explainField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please choose a word !");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+            alert.setHeaderText("This action cannot be undone");
+            alert.setContentText("Do you want to continue ?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                dictionary.removeWord(lastWordSearch);
+                new Thread(() -> {
+                    handleSuggestionBox();
+                }).start();
+                searchField.setText("");
+                explainField.setText("");
+            }
+        }
+    }
+
+    public void handleFavoriteButton(ActionEvent event) {
+        if (lastWordSearch == null || explainField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please choose a word !");
+            Optional<ButtonType> result = alert.showAndWait();
+        } else {
+            if (dictionary.addFavoriteWord(lastWordSearch)) {
+                favoriteWordImage.setImage(FAVORITE_IMAGE);
+            } else {
+                favoriteWordImage.setImage(UNFAVORITE_IMAGE);
+                dictionary.removeFavoriteWord(lastWordSearch);
+            }
+        }
     }
 }

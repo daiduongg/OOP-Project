@@ -10,9 +10,8 @@ import javafx.stage.StageStyle;
 public class GameApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("menuGUI.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
         Parent root = loader.load();
-        primaryStage.initStyle(StageStyle.UNDECORATED);
         StageManager.setPrimaryStage(primaryStage);
         StageManager.showStage(new Scene(root));
     }

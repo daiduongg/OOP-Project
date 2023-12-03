@@ -111,7 +111,7 @@ public class GameController implements Initializable {
         new Thread(() -> {
             try {
                 System.out.println(-1);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("menuGUI.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
                 menuRoot = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -229,7 +229,7 @@ public class GameController implements Initializable {
             Platform.runLater(() -> {
                 clear();
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("menuGUI.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
                     Parent root = loader.load();
                     StageManager.showStage(new Scene(root));
                 } catch (IOException e) {
@@ -242,7 +242,7 @@ public class GameController implements Initializable {
          */
             try {
                 System.out.println(-1);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("menuGUI.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
                 menuRoot = loader.load();
                 clear();
                 StageManager.showStage(new Scene(menuRoot));

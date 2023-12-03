@@ -19,7 +19,7 @@ public class TextToSpeech {
                 // voice.setRate(110);
                 //voice.setPitch(110);
                 //voice.setVolume(3);
-                voice.setRate(150);
+                voice.setRate(110);
                 voice.setPitch(100);
                 voice.setVolume(0.8f);
 
@@ -38,7 +38,7 @@ public class TextToSpeech {
 
     public static void main(String[] args) {
         TextToSpeech ttp = new TextToSpeech();
-        ttp.SpeakText("Hello im Peaky Blinders");
+        ttp.SpeakText("fa");
         ttp.SpeakText("Shut the fuck up");
     }
 }
