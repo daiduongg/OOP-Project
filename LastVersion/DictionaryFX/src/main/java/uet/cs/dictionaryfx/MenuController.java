@@ -16,7 +16,8 @@ import javafx.util.Duration;
 import uet.cs.dictionaryfx.dictionary.gui.SearchController;
 import uet.cs.dictionaryfx.dictionary.model.Dictionary;
 import uet.cs.dictionaryfx.dictionary.model.DictionaryManager;
-
+import javafx.event.Event;
+import javafx.event.EventType;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -50,6 +51,14 @@ public class MenuController implements Initializable {
 
         new Thread(() -> {
             SceneManager.loadRootGame();
+        }).start();
+
+        new Thread(() -> {
+            SceneManager.loadRootGameMenu();
+        }).start();
+
+        new Thread(() -> {
+            SceneManager.loadRootGoogleTranslate();
         }).start();
     }
 

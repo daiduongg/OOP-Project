@@ -13,11 +13,14 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.*;
+import java.nio.file.*;
 
 public class DictionaryLoader {
     private Dictionary dictionary;
@@ -369,9 +372,9 @@ public class DictionaryLoader {
 
     public String getEnAudioURL(String word) {
         if (word != null && !word.contains(" ")) {
+            HttpClient httpClient = HttpClient.newHttpClient();
             try {
                 String apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
-                HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest httpRequest = HttpRequest.newBuilder()
                         .uri(URI.create(apiUrl))
                         .build();
@@ -388,14 +391,16 @@ public class DictionaryLoader {
                             JSONObject phonetic = phoneticsArray.getJSONObject(i);
                             String audioUrl = phonetic.optString("audio", "");
                             if (audioUrl.trim().length() > 0) {
+                                httpClient.close();
                                 return audioUrl;
                             }
                         }
                     }
                 }
-                httpClient.close();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                httpClient.close();
             }
         }
         return null;
@@ -404,8 +409,8 @@ public class DictionaryLoader {
     public boolean downloadEnAudio(String audioUrl) {
         String fileName = "en-word-audio.mp3";
         if (audioUrl != null && fileName != null) {
+            HttpClient httpClient = HttpClient.newHttpClient();
             try {
-                HttpClient httpClient = HttpClient.newHttpClient();
                 HttpRequest httpRequest = HttpRequest.newBuilder()
                         .uri(URI.create(audioUrl))
                         .build();
@@ -428,6 +433,8 @@ public class DictionaryLoader {
                 return true;
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                httpClient.close();
             }
         }
         return false;
@@ -466,5 +473,5 @@ public class DictionaryLoader {
         }
         return false;
     }
-
 }
+

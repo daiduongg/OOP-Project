@@ -12,7 +12,6 @@ public class StageManager {
     public static void setPrimaryStage(Stage stage) {
         primaryStage = stage;
     }
-
     public static Stage getPrimaryStage() {
         return primaryStage;
     }

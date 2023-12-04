@@ -21,3 +21,4 @@ public class DictionaryApp extends Application {
         launch(args);
     }
 }
+

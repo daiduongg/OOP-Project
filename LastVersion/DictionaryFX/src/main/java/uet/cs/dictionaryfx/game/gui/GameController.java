@@ -1,5 +1,7 @@
 package uet.cs.dictionaryfx.game.gui;
 
+import javafx.event.Event;
+import javafx.event.EventType;
 import uet.cs.dictionaryfx.game.model.*;
 
 import javafx.animation.AnimationTimer;
@@ -88,7 +90,6 @@ public class GameController implements Initializable {
     @FXML
     private Pane quizPane;
 
-
     private Game game;
     private GameLoop gameLoop;
     private Quiz quiz;
@@ -107,19 +108,12 @@ public class GameController implements Initializable {
     //Method
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*
-        new Thread(() -> {
-            try {
-                System.out.println(-1);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
-                menuRoot = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        Test();
+    }
 
-         */
-
+    public void Test() {
+        shipImage.setLayoutX(230);
+        shipImage.setLayoutY(44);
         tt = new TranslateTransition(Duration.millis(1000), shipImage);
         game = new Game();
         gameLoop = new GameLoop();
@@ -132,6 +126,14 @@ public class GameController implements Initializable {
         needAnswerQuizz = false;
 
         gameLoop.start();
+    }
+
+    public class OpenGameMenuEvent extends Event {
+        public static final EventType<GameController.OpenGameMenuEvent> OPEN_GAME_MENU_EVENT_TYPE = new EventType<>(Event.ANY, "OPEN_GAME_MENU");
+
+        public OpenGameMenuEvent() {
+            super(OPEN_GAME_MENU_EVENT_TYPE);
+        }
     }
 
     public class GameLoop extends AnimationTimer {
@@ -211,44 +213,10 @@ public class GameController implements Initializable {
         }
     }
 
-    public class LoadingTask extends Task<Void> {
-        @Override
-        protected Void call() throws Exception {
-            darkPane.setVisible(true);
-            loadingImage.setVisible(true);
-
-            Thread.sleep(500);
-            return null;
-        }
-    }
-
     public void handleBackMenuButton(ActionEvent event) {
-        /*
-        LoadingTask loadingTask = new LoadingTask();
-        loadingTask.setOnSucceeded(workerStateEvent -> {
-            Platform.runLater(() -> {
-                clear();
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
-                    Parent root = loader.load();
-                    StageManager.showStage(new Scene(root));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        });
-        new Thread(loadingTask).start();
-
-         */
-            try {
-                System.out.println(-1);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("gameMenuGUI.fxml"));
-                menuRoot = loader.load();
-                clear();
-                StageManager.showStage(new Scene(menuRoot));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        clear();
+        OpenGameMenuEvent openGameMenuEvent = new OpenGameMenuEvent();
+        backMenuButton.fireEvent(openGameMenuEvent);
     }
 
     public void handleAnswerButton(ActionEvent event) {

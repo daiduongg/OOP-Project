@@ -1,7 +1,9 @@
 package uet.cs.dictionaryfx;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
+import uet.cs.dictionaryfx.dictionary.gui.GoogleTranslateController;
 import uet.cs.dictionaryfx.dictionary.gui.SearchController;
 import uet.cs.dictionaryfx.game.gui.GameController;
 import uet.cs.dictionaryfx.game.gui.GameMenuController;
@@ -13,6 +15,7 @@ public class SceneManager {
     private static Parent rootGame;
     private static Parent rootFrame;
     private static Parent rootGameMenu;
+    private static Parent rootGoogleTranslate;
 
     public static Parent getRootSearch() {
         return rootSearch;
@@ -46,6 +49,14 @@ public class SceneManager {
         SceneManager.rootGameMenu = rootGameMenu;
     }
 
+    public static Parent getRootGoogleTranslate() {
+        return rootGoogleTranslate;
+    }
+
+    public static void setRootGoogleTranslate(Parent rootGoogleTranslate) {
+        SceneManager.rootGoogleTranslate = rootGoogleTranslate;
+    }
+
     public static void loadRootSearch() {
         try {
             FXMLLoader loader = new FXMLLoader(SearchController.class.getResource("searchGUI.fxml"));
@@ -77,6 +88,15 @@ public class SceneManager {
         try {
             FXMLLoader loader = new FXMLLoader(GameMenuController.class.getResource("gameMenuGUI.fxml"));
             rootGameMenu = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadRootGoogleTranslate() {
+        try {
+            FXMLLoader loader = new FXMLLoader(GoogleTranslateController.class.getResource("googleTranslateGUI.fxml"));
+            rootGoogleTranslate = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }

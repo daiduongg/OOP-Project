@@ -2,6 +2,9 @@ package uet.cs.dictionaryfx.game.gui;
 
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,31 +42,19 @@ public class GameMenuController implements Initializable {
     @FXML
     private Button exitHelpButton;
     private Parent newGameRoot;
-
     private static MediaPlayer mediaPlayer;
 
-    public class LoadingTask extends Task<Void> {
-        @Override
-        protected Void call() throws Exception {
-            // Thực hiện công việc nền ở đây, ví dụ như load dữ liệu hoặc chuẩn bị các tài nguyên cần thiết
-            darkPane.setVisible(true);
-            loadingImage.setVisible(true);
+    public class OpenGameEvent extends Event {
+        public static final EventType<OpenGameEvent> OPEN_GAME_EVENT_TYPE = new EventType<>(Event.ANY, "OPEN_GAME");
 
-            Thread.sleep(500); // Giả sử công việc nền mất 2 giây
-            return null;
+        public OpenGameEvent() {
+            super(OPEN_GAME_EVENT_TYPE);
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            new Thread(() -> {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("gameGUI.fxml"));
-                    newGameRoot = loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+
     }
 
     public static void startMusic() {
@@ -75,11 +66,14 @@ public class GameMenuController implements Initializable {
         mediaPlayer.play();
         System.out.println(-1);
     }
-
     public void handleNewGameButton(ActionEvent event) {
-        clear();
-        StageManager.showStage(new Scene(newGameRoot));
+
+        //clear();
+        //StageManager.showStage(new Scene(newGameRoot));
+        OpenGameEvent openGameEvent = new OpenGameEvent();
+        newGameButton.fireEvent(openGameEvent);
     }
+
 
     public void handleHelpButton(ActionEvent event) {
         darkPane.setVisible(true);

@@ -45,49 +45,49 @@
             </Pane>
          </top>
          <left>
-            <AnchorPane prefHeight="768.0" prefWidth="88.0" style="-fx-background-color: rgb(19,38,63); -fx-border-color: white;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="768.0" prefWidth="88.0" style="-fx-background-color: rgb(19,38,63); -fx-border-color: grey;" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="CENTER" layoutX="2.0" layoutY="193.0" prefHeight="542.0" prefWidth="90.0" spacing="30.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: rgb(55,85,117);">
+                  <VBox alignment="CENTER" layoutX="12.0" layoutY="189.0" prefHeight="542.0" prefWidth="70.0" spacing="30.0" style="-fx-background-radius: 100; -fx-border-radius: 10; -fx-background-color: rgb(55,85,117);">
                      <children>
-                        <Button fx:id="homeButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #00CCEA; -fx-background-radius: 100;" text="Home">
+                        <Button fx:id="searchButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="60.0" prefWidth="60.0" style="-fx-background-radius: 100; -fx-background-color: #375575;" text="Home">
                            <graphic>
-                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@dictionary/gui/Assets/icons8-search-64%20(2).png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="googleAPIButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleGoogleAPIButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-radius: 100; -fx-background-color: #375575;" text="GoogleAPI">
+                        <Button fx:id="googleAPIButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleGoogleAPIButton" prefHeight="60.0" prefWidth="60.0" style="-fx-background-radius: 100; -fx-background-color: #375575;" text="GoogleAPI">
                            <graphic>
-                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@dictionary/gui/Assets/icons8-google-translate-100%20(2).png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="favoriteButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleFavoriteButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Favorite">
+                        <Button fx:id="favoriteButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleFavoriteButton" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Favorite">
                            <graphic>
-                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@dictionary/gui/Assets/icons8-heart-100%20(2).png" />
+                                    <Image url="@dictionary/gui/Assets/icons8-person-100.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="gameButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleGameButton" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Game">
+                        <Button fx:id="gameButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleGameButton" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Game">
                            <graphic>
-                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@dictionary/gui/Assets/icons8-game-100%20(2).png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Chat">
+                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #375575; -fx-background-radius: 100;" text="Chat">
                            <graphic>
-                              <ImageView fitHeight="48.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
                                     <Image url="@dictionary/gui/Assets/ChatGPT.png" />
                                  </image>
