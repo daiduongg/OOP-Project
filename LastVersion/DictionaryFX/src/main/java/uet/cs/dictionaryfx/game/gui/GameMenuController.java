@@ -17,18 +17,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.cs.dictionaryfx.SceneManager;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GameMenuController implements Initializable {
+
     @FXML
     private Button newGameButton;
     @FXML
     private Button helpButton;
-    //@FXML
-    //private Button highScoreButton;
     @FXML
     private Button musicButton;
     @FXML
@@ -41,8 +41,8 @@ public class GameMenuController implements Initializable {
     private Pane darkPane;
     @FXML
     private Button exitHelpButton;
-    private Parent newGameRoot;
     private static MediaPlayer mediaPlayer;
+
 
     public class OpenGameEvent extends Event {
         public static final EventType<OpenGameEvent> OPEN_GAME_EVENT_TYPE = new EventType<>(Event.ANY, "OPEN_GAME");
@@ -64,12 +64,14 @@ public class GameMenuController implements Initializable {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setVolume(0.1);
         mediaPlayer.play();
-        System.out.println(-1);
     }
     public void handleNewGameButton(ActionEvent event) {
+        new Thread(() -> {
+            SceneManager.loadRootGame();
+        }).start();
 
-        //clear();
-        //StageManager.showStage(new Scene(newGameRoot));
+
+
         OpenGameEvent openGameEvent = new OpenGameEvent();
         newGameButton.fireEvent(openGameEvent);
     }
@@ -84,9 +86,6 @@ public class GameMenuController implements Initializable {
         darkPane.setVisible(false);
         helpPane.setVisible(false);
     }
-    public void handleHighScoreButton(ActionEvent event) {
-
-    }
 
     public void handleMusicButton(ActionEvent event) {
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
@@ -100,16 +99,10 @@ public class GameMenuController implements Initializable {
         }
     }
 
-    public void clear() {
-        mediaPlayer.stop();
-        mediaPlayer.dispose();
-        loadingImage.setImage(null);
-        musicImage.setImage(null);
-
-        // Xóa các style của các button nếu cần thiết
-        newGameButton.setStyle("");
-        helpButton.setStyle("");
-        //highScoreButton.setStyle("");
-        musicButton.setStyle("");
+    public static void clearMusic () {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+        }
     }
 }

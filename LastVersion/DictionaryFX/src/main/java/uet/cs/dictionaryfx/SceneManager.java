@@ -1,18 +1,28 @@
 package uet.cs.dictionaryfx;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import uet.cs.dictionaryfx.dictionary.gui.GoogleTranslateController;
 import uet.cs.dictionaryfx.dictionary.gui.SearchController;
 import uet.cs.dictionaryfx.game.gui.GameController;
 import uet.cs.dictionaryfx.game.gui.GameMenuController;
 
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SceneManager {
     private static Parent rootSearch;
-    private static Parent rootGame;
+    private static StackPane rootGame;
     private static Parent rootFrame;
     private static Parent rootGameMenu;
     private static Parent rootGoogleTranslate;
@@ -25,16 +35,18 @@ public class SceneManager {
         SceneManager.rootSearch = rootSearch;
     }
 
-    public static Parent getRootGame() {
-        return rootGame;
+    public static Parent getRootFrame() {
+        return rootFrame;
     }
 
-    public static void setRootGame(Parent rootGame) {
+    public static void setRootGame(StackPane rootGame) {
         SceneManager.rootGame = rootGame;
     }
 
-    public static Parent getRootFrame() {
-        return rootFrame;
+    public static Parent getRootGame() {
+        StackPane copy = new StackPane();
+        copy.getChildren().addAll(rootGame.getChildren());
+        return copy;
     }
 
     public static void setRootFrame(Parent rootFrame) {

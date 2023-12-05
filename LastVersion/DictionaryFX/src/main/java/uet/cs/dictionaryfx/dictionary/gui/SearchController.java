@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -25,6 +26,7 @@ import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class SearchController implements Initializable {
     private Dictionary dictionary;
@@ -75,11 +77,14 @@ public class SearchController implements Initializable {
     private TextArea wordDataAddField;
     @FXML
     private ImageView favoriteWordImage;
+    @FXML
+    private Button historyRemoveButton;
     private boolean isWordAudioReady;
     private MediaPlayer mediaPlayer;
     private String lastWordSearch;
     private final Image FAVORITE_IMAGE = new Image(getClass().getResourceAsStream("Assets/favorite.png"));
     private final Image UNFAVORITE_IMAGE = new Image(getClass().getResourceAsStream("Assets/unfavorite.png"));
+    private final Image HISTORY_IMAGE = new Image(getClass().getResourceAsStream("Assets/history1.png"));
 
 
     @Override
@@ -136,6 +141,12 @@ public class SearchController implements Initializable {
                 suggestionBox.setVisible(false);
             });
         });
+        explainField.setOnMouseClicked(mouseEvent -> {
+            suggestionBox.setVisible(false);
+        });
+        searchField.setOnMouseClicked(mouseEvent -> {
+            suggestionBox.setVisible(true);
+        });
     }
 
     public void searchAndShow(String wordName) {
@@ -146,11 +157,19 @@ public class SearchController implements Initializable {
             lastWordSearch = null;
             return;
         }
+
         if (dictionary.isExistInFavoriteList(wordName)) {
             favoriteWordImage.setImage(FAVORITE_IMAGE);
         } else {
             favoriteWordImage.setImage(UNFAVORITE_IMAGE);
         }
+
+        if (dictionary.isExistInHistoryList(wordName)) {
+            historyRemoveButton.setVisible(true);
+        } else {
+            historyRemoveButton.setVisible(false);
+        }
+
         lastWordSearch = wordName;
         String wordData;
         wordData = dictionary.getWordData(wordName);
@@ -158,18 +177,21 @@ public class SearchController implements Initializable {
             //isWordAudioReady = enViDictionary.isLoadedWordAudio(wordName);
             new Thread(() -> {
                 isWordAudioReady = dictionary.isLoadedWordAudio(wordName);
-                // You can perform additional actions after loading audio if needed
             }).start();
         }
 
         if (wordData != null) {
             explainField.setText(wordData);
+            dictionary.addHistoryWord(wordName);
         } else {
             String error = new String("Your search terms did not match any entries.");
             explainField.setText(error);
             isWordAudioReady = false;
         }
         suggestionBox.setVisible(false);
+        new Thread(() -> {
+            handleSuggestionBox();
+        }).start();
     }
 
     public void handleSearchButton(ActionEvent event) {
@@ -187,9 +209,10 @@ public class SearchController implements Initializable {
             }
         }
     }
-
+/*
     public void handleSuggestionBox() {
         List<String> wordslist = dictionary.getAllWords();
+        List<String> historyWordList = dictionary.getHistoryWordList();
         ObservableList<String> suggestedKeyWords = FXCollections.observableList(wordslist);
         FilteredList<String> filteredSuggestions = new FilteredList<>(suggestedKeyWords, s -> true);
         ListView<String> suggestionListView = new ListView<>(filteredSuggestions);
@@ -211,7 +234,9 @@ public class SearchController implements Initializable {
                         suggestionBox.setVisible(false);
                     }
                 } else {
-                    suggestionBox.setVisible(false);
+                    //suggestionBox.setVisible(false);
+                    filteredSuggestions.setPredicate(keyword ->
+                            historyWordList.isEmpty() || historyWordList.contains(keyword.toLowerCase()));
                 }
             }
         }));
@@ -222,6 +247,75 @@ public class SearchController implements Initializable {
             searchAndShow(word);
         });
     }
+
+ */
+
+    public void handleSuggestionBox() {
+        List<String> wordslist = dictionary.getAllWords();
+        List<String> historyWordList = dictionary.getHistoryWordList();
+        ObservableList<String> suggestedKeyWords = FXCollections.observableList(wordslist);
+        FilteredList<String> filteredSuggestions = new FilteredList<>(suggestedKeyWords, s -> true);
+        ListView<String> suggestionListView = new ListView<>(filteredSuggestions);
+        suggestionListView.setStyle("-fx-font-size: 20;\n" +
+                "-fx-font-family: Arial;\n" +
+                "-fx-fill: #1d2a57;");
+        suggestionBox.setVisible(false);
+
+        suggestionListView.setCellFactory(param -> new ListCell<>() {
+            private final HBox graphicContainer = new HBox(5);
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    ImageView historyIcon = new ImageView(dictionary.isExistInHistoryList(item) ? HISTORY_IMAGE : null);
+                    historyIcon.setFitWidth(20);
+                    historyIcon.setFitHeight(20);
+                    Label wordLabel = new Label(item);
+
+                    graphicContainer.getChildren().setAll(historyIcon, wordLabel);
+                    setGraphic(graphicContainer);
+                }
+            }
+        });
+
+        System.out.println(-1);
+        filteredSuggestions.setPredicate(keyword ->
+                historyWordList.isEmpty() || historyWordList.contains(keyword.toLowerCase()));
+        suggestionBox.getChildren().clear();
+        suggestionBox.getChildren().add(suggestionListView);
+        searchField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (!newValue.isEmpty()) {
+                    filteredSuggestions.setPredicate(keyword ->
+                            keyword.toLowerCase().startsWith(newValue.toLowerCase()));
+
+                    if (!filteredSuggestions.isEmpty()) {
+                        suggestionBox.getChildren().clear();
+                        suggestionBox.getChildren().add(suggestionListView);
+                        suggestionBox.setVisible(true);
+                    } else {
+                        suggestionBox.setVisible(false);
+                    }
+                } else {
+                    //suggestionBox.setVisible(false);
+                    filteredSuggestions.setPredicate(keyword ->
+                            historyWordList.isEmpty() || historyWordList.contains(keyword.toLowerCase()));
+                }
+            }
+        }));
+
+        suggestionListView.setOnMouseClicked(mouseEvent -> {
+            String word = suggestionListView.getSelectionModel().getSelectedItem();
+            searchField.setText(word);
+            searchAndShow(word);
+        });
+    }
+
 
     public void handleSpeechButton(ActionEvent event) {
         if (lastWordSearch == null || explainField.getText().isEmpty()) {
@@ -257,8 +351,6 @@ public class SearchController implements Initializable {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-            } else if (mode == Dictionary.MODE.ENGLISH && lastWordSearch != null) {
-                dictionary.wordSpeech(lastWordSearch);
             }
         }
     }
@@ -418,6 +510,22 @@ public class SearchController implements Initializable {
                 searchField.setText("");
                 explainField.setText("");
             }
+        }
+    }
+
+    public void handleHistoryRemoveButton(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setHeaderText("This action cannot be undone");
+        alert.setContentText("Do you want to continue ?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            dictionary.removeHistoryWord(lastWordSearch);
+            new Thread(() -> {
+                handleSuggestionBox();
+            }).start();
+            historyRemoveButton.setVisible(false);
         }
     }
 

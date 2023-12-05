@@ -6,7 +6,6 @@ import java.util.*;
 public class Dictionary {
     private Trie wordsTrie;
     private DictionaryLoader dictionaryLoader;
-    private TextToSpeech tts;
     private Set<String> historyWord = new LinkedHashSet<>();
     private Set<String> favoriteWord = new TreeSet<>();
     private MODE mode;
@@ -18,7 +17,6 @@ public class Dictionary {
 
     public Dictionary(MODE mode_) {
         mode = mode_;
-        tts = new TextToSpeech();
         wordsTrie = new Trie();
         dictionaryLoader = new DictionaryLoader(this);
         if (mode == MODE.ENGLISH) {
@@ -63,10 +61,6 @@ public class Dictionary {
         return false;
     }
 
-    public void wordSpeech(String word) {
-        tts.SpeakText(word);
-    }
-
     public List<String> getHistoryWordList() {
         List<String> result = new ArrayList<>();
         for (String word : historyWord) {
@@ -105,17 +99,23 @@ public class Dictionary {
         return true;
     }
 
-    public void addHistoryWord(String wordName) {
-        if (mode == MODE.ENGLISH) {
-            dictionaryLoader.insertEnViWordToHistoryDB(wordName);
-        } else {
-            dictionaryLoader.insertViEnWordToHistoryDB(wordName);
-        }
+    public boolean isExistInHistoryList(String wordName) {
+        return historyWord.contains(wordName);
+    }
 
-        if (historyWord.contains(wordName)) {
-            historyWord.remove(wordName);
+    public void addHistoryWord(String wordName) {
+        if (wordName != null && wordsTrie.containsWord(wordName)) {
+            if (historyWord.contains(wordName)) {
+                historyWord.remove(wordName);
+            } else {
+                if (mode == MODE.ENGLISH) {
+                    dictionaryLoader.insertEnViWordToHistoryDB(wordName);
+                } else {
+                    dictionaryLoader.insertViEnWordToHistoryDB(wordName);
+                }
+            }
+            historyWord.add(wordName);
         }
-        historyWord.add(wordName);
     }
 
     public void addHistoryWordFromDB(String wordName) {
@@ -139,7 +139,6 @@ public class Dictionary {
     public void removeHistoryWord(String wordName) {
         if (historyWord.contains(wordName)) {
             historyWord.remove(wordName);
-        } else {
             if (mode == MODE.ENGLISH) {
                 dictionaryLoader.removeEnViWordFromHistoryDB(wordName);
             } else {

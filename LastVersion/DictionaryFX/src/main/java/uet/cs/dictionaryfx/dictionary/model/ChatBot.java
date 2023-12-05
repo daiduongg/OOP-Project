@@ -10,11 +10,11 @@ import java.net.URL;
 public class ChatBot {
 
     public static void main(String[] args) {
-        System.out.println(chatGPT("How can i improve my English skill?"));
+        System.out.println(askBot("How can i improve my English skill?"));
         // Prints out a response to the question.
     }
 
-    public static String chatGPT(String message) {
+    public static String askBot(String message) {
         String url = "https://api.openai.com/v1/chat/completions";
         String apiKey = "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"; // API key goes here
         String model = "gpt-3.5-turbo"; // current model of chatgpt api

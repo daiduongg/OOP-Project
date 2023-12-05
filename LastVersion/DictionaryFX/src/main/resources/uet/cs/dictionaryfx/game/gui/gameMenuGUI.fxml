@@ -74,22 +74,25 @@
          <children>
             <Pane layoutX="82.0" layoutY="84.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: rgb(250,194,156); -fx-background-radius: 20; -fx-border-radius: 20;">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="750.0" spacing="17.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="750.0" spacing="20.0">
                      <children>
                         <Text fill="#94632c" strokeType="OUTSIDE" strokeWidth="0.0" text="HELP" textAlignment="CENTER" underline="true" wrappingWidth="750.0">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="48.0" />
                            </font>
                            <VBox.margin>
-                              <Insets />
+                              <Insets bottom="20.0" />
                            </VBox.margin>
                         </Text>
                         <Text fill="#1e1e1d" strokeType="OUTSIDE" strokeWidth="0.0" text="Find treausre by rolling the dice and answering correctly" textAlignment="CENTER" wrappingWidth="750.0">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="22.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Text>
-                        <ImageView fitHeight="77.0" fitWidth="92.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="99.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -102,7 +105,7 @@
                               <Font name="Arial Rounded MT Bold" size="22.0" />
                            </font>
                         </Text>
-                        <ImageView fitHeight="77.0" fitWidth="92.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="114.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@Assets/Ship.gif" />
                            </image>
@@ -113,21 +116,6 @@
                            </font>
                         </Text>
                         <Text fill="#1e1e1d" strokeType="OUTSIDE" strokeWidth="0.0" text="Wrong answer will minus 10 points and send you back 2 spaces" textAlignment="CENTER" wrappingWidth="750.0">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="22.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#1e1e1d" strokeType="OUTSIDE" strokeWidth="0.0" text="The pirate will send you back 2 spaces" textAlignment="CENTER" wrappingWidth="750.0">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="22.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#1e1e1d" strokeType="OUTSIDE" strokeWidth="0.0" text="The dolphin will move you forward 2 spaces" textAlignment="CENTER" wrappingWidth="750.0">
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="22.0" />
-                           </font>
-                        </Text>
-                        <Text fill="#1e1e1d" strokeType="OUTSIDE" strokeWidth="0.0" text="The volcano will send you back to start" textAlignment="CENTER" wrappingWidth="750.0">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="22.0" />
                            </font>
@@ -155,5 +143,14 @@
             <Image url="@Assets/1200x1200.gif" />
          </image>
       </ImageView>
+      <AnchorPane prefHeight="768.0" prefWidth="914.0">
+         <children>
+            <ImageView fitHeight="780.0" fitWidth="936.0" pickOnBounds="true">
+               <image>
+                  <Image url="@Assets/vecteezy_pirate-ship-near-sea-island-beach-cartoon_25449486.jpg" />
+               </image>
+            </ImageView>
+            <Pane opacity="0.25" prefHeight="780.0" prefWidth="936.0" style="-fx-background-color: black;" />
+         </children></AnchorPane>
    </children>
 </StackPane>

@@ -293,10 +293,5 @@
             </Pane>
          </children>
       </Pane>
-      <ImageView fx:id="loadingImage" fitHeight="311.0" fitWidth="322.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@Assets/1200x1200.gif" />
-         </image>
-      </ImageView>
    </children>
 </StackPane>

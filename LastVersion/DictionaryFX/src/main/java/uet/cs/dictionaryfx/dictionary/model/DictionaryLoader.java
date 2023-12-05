@@ -196,7 +196,7 @@ public class DictionaryLoader {
             String jdbcUrl = "jdbc:sqlite:" + dbPath.toAbsolutePath();
             Connection connection = DriverManager.getConnection(jdbcUrl);
 
-            String sql = "INSERT INTO tbl_history (word) VALUES ?";
+            String sql = "INSERT INTO tbl_history (word) VALUES (?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, toLowerCaseWordName(wordName).trim());

@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import uet.cs.dictionaryfx.game.gui.GameController;
 import uet.cs.dictionaryfx.game.gui.GameMenuController;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,12 +45,9 @@ public class FrameController implements Initializable {
         mainBP.addEventHandler(GameController.OpenGameMenuEvent.OPEN_GAME_MENU_EVENT_TYPE, event -> {
             setCenterToGameMenu();
         });
+
         mainBP.addEventHandler(GameMenuController.OpenGameEvent.OPEN_GAME_EVENT_TYPE, event -> {
             setCenterToGame();
-            new Thread(() -> {
-                SceneManager.loadRootGame();
-                System.out.println("done");
-            }).start();
         });
     }
 
@@ -84,7 +80,6 @@ public class FrameController implements Initializable {
         if (status != STATUS.GAME) {
             setCenterToGameMenu();
             status = STATUS.GAME;
-
         }
     }
 
