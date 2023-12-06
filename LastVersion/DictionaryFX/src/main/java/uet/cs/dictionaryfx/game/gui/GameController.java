@@ -45,6 +45,8 @@ public class GameController implements Initializable {
     private final String VOLCANO_SOUND_PATH = getClass().getResource("Assets/volcano_sound.mp3").toExternalForm();
     private final String GUNSHOT_SOUND_PATH = getClass().getResource("Assets/gunshot.mp3").toExternalForm();
     private final String CORRECT_ANSWER_SOUND_PATH = getClass().getResource("Assets/correct-answer.mp3").toExternalForm();
+    private final String WIN_GAME_SOUND_PATH = getClass().getResource("Assets/win_music.mp3").toExternalForm();
+    private final String LOSE_GAME_SOUND_PATH = getClass().getResource("Assets/loose_music.mp3").toExternalForm();
 
 
     private static final String STYLE_NO_COLOR_ANSWER_BUTTON = "-fx-background-color: white; -fx-border-color: yellow; -fx-border-width: 5; -fx-background-radius: 20; -fx-border-radius: 20";
@@ -164,12 +166,15 @@ public class GameController implements Initializable {
                 scoreText.setText("Your score: " + game.getScore());
                 if (game.isWin()) {
                     winText.setVisible(true);
-                    looseTreasure.setVisible(true);
+                    winTreasure.setVisible(true);
+                    createAndPlayMediaPlayer(WIN_GAME_SOUND_PATH, 0.5);
                 } else if (game.isLoose()) {
                     looseText.setVisible(true);
                     looseTreasure.setVisible(true);
+                    createAndPlayMediaPlayer(LOSE_GAME_SOUND_PATH, 0.5);
                 }
                 endPane.setVisible(true);
+                gameLoop.stop();
             }
         }
     }

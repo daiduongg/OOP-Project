@@ -104,7 +104,6 @@ public class MenuGameController implements Initializable {
 
     public static void clearMusic () {
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
             mediaPlayer.dispose();
         }
     }

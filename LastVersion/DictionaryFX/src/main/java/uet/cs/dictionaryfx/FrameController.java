@@ -91,28 +91,35 @@ public class FrameController implements Initializable {
     }
 
     public void setCenterToSearch() {
+        MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootSearch());
         setDefaultButtonsColor();
         searchButton.setStyle("-fx-background-color: #00CCEA; -fx-background-radius: 100");
     }
 
     public void setCenterToGame() {
+        MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootGame());
     }
 
     public void setCenterToGameMenu() {
+        if (status != STATUS.GAME) {
+            MenuGameController.startMusic();
+        }
         mainBP.setCenter(SceneManager.getRootGameMenu());
         setDefaultButtonsColor();
         gameButton.setStyle("-fx-background-color: #00CCEA; -fx-background-radius: 100");
     }
 
     public void setCenterToGoogleTranslate() {
+        MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootGoogleTranslate());
         setDefaultButtonsColor();
         googleAPIButton.setStyle("-fx-background-color: #00CCEA; -fx-background-radius: 100");
     }
 
     public void setCenterToChatBot() {
+        MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootChatBot());
         setDefaultButtonsColor();
         chatBotButton.setStyle("-fx-background-color: #00CCEA; -fx-background-radius: 100");

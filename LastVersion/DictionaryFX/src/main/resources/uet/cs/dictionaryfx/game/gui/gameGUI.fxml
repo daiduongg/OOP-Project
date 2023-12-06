@@ -5,6 +5,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -317,19 +318,28 @@
                   <Image url="@Assets/—Pngtree—golden%20treasure%20chsdfsdfest_3415063.png" />
                </image>
             </ImageView>
-            <Text fx:id="winText" fill="#f0dc02" layoutX="392.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONGRATULATION, YOU WIN !" visible="false">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="27.0" />
-               </font></Text>
-            <Text fx:id="looseText" fill="#f0dc02" layoutX="408.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOU LOST, A BIT  YOUNG " visible="false">
+            <Text fx:id="winText" fill="#f00202" layoutX="392.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONGRATULATION, YOU WIN !" visible="false">
                <font>
                   <Font name="Arial Rounded MT Bold" size="27.0" />
                </font>
+               <effect>
+                  <DropShadow />
+               </effect></Text>
+            <Text fx:id="looseText" fill="#f00202" layoutX="392.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOU LOST, A BIT  YOUNG HAHA " visible="false">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="27.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
             </Text>
-            <Text fx:id="scoreText" fill="#f0dc02" layoutX="392.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR SCORE: ">
+            <Text fx:id="scoreText" fill="#f00202" layoutX="392.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR SCORE: ">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="27.0" />
+                  <Font name="Roboto Black" size="27.0" />
                </font>
+               <effect>
+                  <DropShadow />
+               </effect>
             </Text>
             <JFXButton layoutX="589.0" layoutY="318.0" onAction="#handleBackMenuButton" prefWidth="135.0" styleClass="shiny" stylesheets="@stylesheet.css" text="Back Menu" />
          </children>
