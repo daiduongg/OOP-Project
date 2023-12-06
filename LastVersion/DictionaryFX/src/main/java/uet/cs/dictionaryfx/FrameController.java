@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import uet.cs.dictionaryfx.game.gui.GameController;
-import uet.cs.dictionaryfx.game.gui.GameMenuController;
+import uet.cs.dictionaryfx.game.gui.MenuGameController;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -22,11 +22,13 @@ public class FrameController implements Initializable {
     @FXML
     private Button gameButton;
     @FXML
+    private Button chatBotButton;
+    @FXML
     private BorderPane mainBP;
     private STATUS status;
     private static Parent rootHome;
     private static Parent rootGame;
-    private GameMenuController menuGameController;
+    private MenuGameController menuGameController;
     private GameController gameController;
 
     private enum STATUS {
@@ -34,7 +36,8 @@ public class FrameController implements Initializable {
         HOME,
         GOOGLEAPI,
         FAVORITE,
-        GAME
+        GAME,
+        CHAT_BOT
     }
 
     @Override
@@ -46,7 +49,7 @@ public class FrameController implements Initializable {
             setCenterToGameMenu();
         });
 
-        mainBP.addEventHandler(GameMenuController.OpenGameEvent.OPEN_GAME_EVENT_TYPE, event -> {
+        mainBP.addEventHandler(MenuGameController.OpenGameEvent.OPEN_GAME_EVENT_TYPE, event -> {
             setCenterToGame();
         });
     }
@@ -56,6 +59,7 @@ public class FrameController implements Initializable {
         googleAPIButton.setStyle("-fx-background-color: #375575; -fx-background-radius: 100");
         favoriteButton.setStyle("-fx-background-color: #375575; -fx-background-radius: 100");
         gameButton.setStyle("-fx-background-color: #375575; -fx-background-radius: 100");
+        chatBotButton.setStyle("-fx-background-color: #375575; -fx-background-radius: 100");
     }
 
     public void handleSearchButton(ActionEvent event) {
@@ -72,8 +76,11 @@ public class FrameController implements Initializable {
         }
     }
 
-    public void handleFavoriteButton(ActionEvent event) {
-
+    public void handleChatBotButton(ActionEvent event) {
+        if (status != STATUS.CHAT_BOT) {
+            setCenterToChatBot();
+            status = STATUS.CHAT_BOT;
+        }
     }
 
     public void handleGameButton(ActionEvent event) {
@@ -103,5 +110,11 @@ public class FrameController implements Initializable {
         mainBP.setCenter(SceneManager.getRootGoogleTranslate());
         setDefaultButtonsColor();
         googleAPIButton.setStyle("-fx-background-color: #00CCEA; -fx-background-radius: 100");
+    }
+
+    public void setCenterToChatBot() {
+        mainBP.setCenter(SceneManager.getRootChatBot());
+        setDefaultButtonsColor();
+        chatBotButton.setStyle("-fx-background-color: #00CCEA; -fx-background-radius: 100");
     }
 }

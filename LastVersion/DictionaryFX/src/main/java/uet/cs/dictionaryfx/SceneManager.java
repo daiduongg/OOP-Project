@@ -1,24 +1,15 @@
 package uet.cs.dictionaryfx;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import uet.cs.dictionaryfx.dictionary.gui.ChatBotController;
 import uet.cs.dictionaryfx.dictionary.gui.GoogleTranslateController;
 import uet.cs.dictionaryfx.dictionary.gui.SearchController;
 import uet.cs.dictionaryfx.game.gui.GameController;
-import uet.cs.dictionaryfx.game.gui.GameMenuController;
+import uet.cs.dictionaryfx.game.gui.MenuGameController;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SceneManager {
     private static Parent rootSearch;
@@ -26,6 +17,8 @@ public class SceneManager {
     private static Parent rootFrame;
     private static Parent rootGameMenu;
     private static Parent rootGoogleTranslate;
+    private static Parent rootChatBot;
+
 
     public static Parent getRootSearch() {
         return rootSearch;
@@ -65,6 +58,14 @@ public class SceneManager {
         return rootGoogleTranslate;
     }
 
+    public static Parent getRootChatBot() {
+        return rootChatBot;
+    }
+
+    public static void setRootChatBot(Parent rootChatBot) {
+        SceneManager.rootChatBot = rootChatBot;
+    }
+
     public static void setRootGoogleTranslate(Parent rootGoogleTranslate) {
         SceneManager.rootGoogleTranslate = rootGoogleTranslate;
     }
@@ -98,7 +99,7 @@ public class SceneManager {
 
     public static void loadRootGameMenu() {
         try {
-            FXMLLoader loader = new FXMLLoader(GameMenuController.class.getResource("gameMenuGUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(MenuGameController.class.getResource("gameMenuGUI.fxml"));
             rootGameMenu = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,6 +110,15 @@ public class SceneManager {
         try {
             FXMLLoader loader = new FXMLLoader(GoogleTranslateController.class.getResource("googleTranslateGUI.fxml"));
             rootGoogleTranslate = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadRootChatBot() {
+        try {
+            FXMLLoader loader = new FXMLLoader(ChatBotController.class.getResource("chatBotGUI.fxml"));
+            rootChatBot = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }

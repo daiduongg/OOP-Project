@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -14,10 +15,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.game.gui.GameController">
    <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="914.0" style="-fx-background-color: yellow;">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="914.0">
          <top>
             <Pane prefHeight="68.0" prefWidth="459.0" style="-fx-background-color: #084c64;" BorderPane.alignment="CENTER">
                <children>
@@ -51,7 +53,7 @@
             </Pane>
          </top>
          <center>
-            <Pane prefHeight="700.0" style="-fx-background-color: #0874ac; -fx-border-color: yellow; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 5;" BorderPane.alignment="CENTER">
+            <Pane prefHeight="700.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 5; -fx-border-color: yellow;" styleClass="main_pane" stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="170.0" fitWidth="170.0" layoutX="2.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -291,6 +293,45 @@
                   <Button fx:id="quizNextButton" contentDisplay="CENTER" disable="true" layoutX="541.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleQuizNextButton" styleClass="shiny" stylesheets="@stylesheet.css" text="NEXT" />
                </children>
             </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="endPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+         <children>
+            <ImageView fitHeight="768.0" fitWidth="915.0" pickOnBounds="true">
+               <image>
+                  <Image url="@Assets/menu_bkgr.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="340.0" fitWidth="441.0" layoutX="287.0" layoutY="374.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Assets/main_1.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="looseTreasure" fitHeight="281.0" fitWidth="297.0" layoutX="104.0" layoutY="517.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@Assets/—Pngtree—decorative%20illustration%20of%20an%20open_7416181.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="winTreasure" fitHeight="230.0" fitWidth="256.0" layoutX="174.0" layoutY="556.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@Assets/—Pngtree—golden%20treasure%20chsdfsdfest_3415063.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="winText" fill="#f0dc02" layoutX="392.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONGRATULATION, YOU WIN !" visible="false">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="27.0" />
+               </font></Text>
+            <Text fx:id="looseText" fill="#f0dc02" layoutX="408.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOU LOST, A BIT  YOUNG " visible="false">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="27.0" />
+               </font>
+            </Text>
+            <Text fx:id="scoreText" fill="#f0dc02" layoutX="392.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR SCORE: ">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="27.0" />
+               </font>
+            </Text>
+            <JFXButton layoutX="589.0" layoutY="318.0" onAction="#handleBackMenuButton" prefWidth="135.0" styleClass="shiny" stylesheets="@stylesheet.css" text="Back Menu" />
          </children>
       </Pane>
    </children>

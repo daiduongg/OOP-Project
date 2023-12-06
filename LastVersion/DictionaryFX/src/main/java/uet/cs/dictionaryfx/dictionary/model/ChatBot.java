@@ -11,7 +11,6 @@ public class ChatBot {
 
     public static void main(String[] args) {
         System.out.println(askBot("How can i improve my English skill?"));
-        // Prints out a response to the question.
     }
 
     public static String askBot(String message) {
@@ -45,7 +44,9 @@ public class ChatBot {
             in.close();
 
             // returns the extracted contents of the response.
-            return extractContentFromResponse(response.toString());
+            String test = extractContentFromResponse(response.toString());
+            System.out.println(test);
+            return test;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -53,7 +54,7 @@ public class ChatBot {
     }
 
     // This method extracts the response expected from chatgpt and returns it.
-    public static String extractContentFromResponse(String response) {
+    private static String extractContentFromResponse(String response) {
         int startMarker = response.indexOf("content")+11; // Marker for where the content starts.
         int endMarker = response.indexOf("\"", startMarker); // Marker for where the content ends.
         return response.substring(startMarker, endMarker); // Returns the substring containing only the response.

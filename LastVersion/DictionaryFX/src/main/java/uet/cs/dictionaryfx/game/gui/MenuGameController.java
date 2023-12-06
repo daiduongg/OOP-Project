@@ -1,15 +1,11 @@
 package uet.cs.dictionaryfx.game.gui;
 
-import javafx.concurrent.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,11 +15,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import uet.cs.dictionaryfx.SceneManager;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameMenuController implements Initializable {
+public class MenuGameController implements Initializable {
 
     @FXML
     private Button newGameButton;
@@ -32,7 +27,7 @@ public class GameMenuController implements Initializable {
     @FXML
     private Button musicButton;
     @FXML
-    private ImageView loadingImage;
+    private Pane loadingPane;
     @FXML
     private ImageView musicImage;
     @FXML
@@ -58,7 +53,7 @@ public class GameMenuController implements Initializable {
     }
 
     public static void startMusic() {
-        String mp3Path = GameMenuController.class.getResource("Assets/menu_music.mp3").toExternalForm();
+        String mp3Path = MenuGameController.class.getResource("Assets/menu_music.mp3").toExternalForm();
         Media media = new Media(mp3Path);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -67,13 +62,21 @@ public class GameMenuController implements Initializable {
     }
     public void handleNewGameButton(ActionEvent event) {
         new Thread(() -> {
-            SceneManager.loadRootGame();
+            clearMusic();
+            Platform.runLater(() -> loadingPane.setVisible(true));
         }).start();
 
-
-
-        OpenGameEvent openGameEvent = new OpenGameEvent();
-        newGameButton.fireEvent(openGameEvent);
+        new Thread(() -> {
+            SceneManager.loadRootGame();
+            OpenGameEvent openGameEvent = new OpenGameEvent();
+            try {
+                Thread.sleep(3000); // Tạm dừng luồng trong 2 giây
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            loadingPane.setVisible(false);
+            Platform.runLater(() -> newGameButton.fireEvent(openGameEvent));
+        }).start();
     }
 
 

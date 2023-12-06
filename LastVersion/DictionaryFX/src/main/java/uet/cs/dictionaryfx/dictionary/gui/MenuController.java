@@ -62,6 +62,10 @@ public class MenuController implements Initializable {
         new Thread(() -> {
             SceneManager.loadRootGoogleTranslate();
         }).start();
+
+        new Thread(() -> {
+            SceneManager.loadRootChatBot();
+        }).start();
     }
 
     public void onDictionaryLoadComplete() {

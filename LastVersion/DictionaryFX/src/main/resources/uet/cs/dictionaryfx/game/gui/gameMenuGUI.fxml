@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="768.0" prefWidth="914.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.game.gui.GameMenuController">
+<StackPane prefHeight="768.0" prefWidth="914.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.game.gui.MenuGameController">
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="914.0">
          <children>
@@ -138,19 +138,63 @@
             </Pane>
          </children>
       </AnchorPane>
-      <ImageView fx:id="loadingImage" fitHeight="311.0" fitWidth="322.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@Assets/1200x1200.gif" />
-         </image>
-      </ImageView>
-      <AnchorPane prefHeight="768.0" prefWidth="914.0">
+      <AnchorPane fx:id="loadingPane" prefHeight="768.0" prefWidth="914.0" visible="false">
          <children>
             <ImageView fitHeight="780.0" fitWidth="936.0" pickOnBounds="true">
                <image>
                   <Image url="@Assets/vecteezy_pirate-ship-near-sea-island-beach-cartoon_25449486.jpg" />
                </image>
             </ImageView>
-            <Pane opacity="0.25" prefHeight="780.0" prefWidth="936.0" style="-fx-background-color: black;" />
+            <Pane layoutY="592.0" opacity="0.51" prefHeight="187.0" prefWidth="936.0" style="-fx-background-color: black;">
+               <children>
+                  <VBox prefHeight="187.0" prefWidth="668.0" spacing="10.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="TIPS:" wrappingWidth="500.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="The pirate will send you back 2 spaces" wrappingWidth="500.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Dolphin will send you 2 spaces forward" wrappingWidth="500.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="The volcano will send you to start" wrappingWidth="500.0">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </Text>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></VBox>
+                  <ImageView fitHeight="60.0" fitWidth="78.0" layoutX="830.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Assets/Ellipsis-1s-200px.gif" />
+                     </image></ImageView>
+                  <Text fill="WHITE" layoutX="799.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOADING" textAlignment="CENTER" wrappingWidth="122.39997863769531">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
          </children></AnchorPane>
    </children>
 </StackPane>

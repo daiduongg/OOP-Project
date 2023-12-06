@@ -2,6 +2,10 @@ package uet.cs.dictionaryfx.game.gui;
 
 import javafx.event.Event;
 import javafx.event.EventType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import uet.cs.dictionaryfx.game.model.*;
 
 import javafx.animation.AnimationTimer;
@@ -28,6 +32,7 @@ import uet.cs.dictionaryfx.game.model.Game;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
@@ -90,6 +95,19 @@ public class GameController implements Initializable {
     @FXML
     private Pane quizPane;
 
+    @FXML
+    private Text winText;
+    @FXML
+    private Text looseText;
+    @FXML
+    private Text scoreText;
+    @FXML
+    private ImageView winTreasure;
+    @FXML
+    private ImageView looseTreasure;
+    @FXML
+    private Pane endPane;
+
     private Game game;
     private GameLoop gameLoop;
     private Quiz quiz;
@@ -143,11 +161,15 @@ public class GameController implements Initializable {
                 updateView();
             } else {
                 diceButton.setDisable(true);
+                scoreText.setText("Your score: " + game.getScore());
                 if (game.isWin()) {
-                    System.out.println("win");
+                    winText.setVisible(true);
+                    looseTreasure.setVisible(true);
                 } else if (game.isLoose()) {
-                    System.out.println("loose");
+                    looseText.setVisible(true);
+                    looseTreasure.setVisible(true);
                 }
+                endPane.setVisible(true);
             }
         }
     }
@@ -214,9 +236,22 @@ public class GameController implements Initializable {
     }
 
     public void handleBackMenuButton(ActionEvent event) {
-        clear();
-        OpenGameMenuEvent openGameMenuEvent = new OpenGameMenuEvent();
-        backMenuButton.fireEvent(openGameMenuEvent);
+        if (!game.isGameOver()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Your game will not be saved");
+            alert.setContentText("Do you want to continue ?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                clear();
+                OpenGameMenuEvent openGameMenuEvent = new OpenGameMenuEvent();
+                backMenuButton.fireEvent(openGameMenuEvent);
+            }
+        } else {
+            clear();
+            OpenGameMenuEvent openGameMenuEvent = new OpenGameMenuEvent();
+            backMenuButton.fireEvent(openGameMenuEvent);
+        }
     }
 
     public void handleAnswerButton(ActionEvent event) {
@@ -389,31 +424,12 @@ public class GameController implements Initializable {
     }
 
     public void clear() {
-        diceImage.setImage(null);
-        shipImage.setImage(null);
-        loadingImage.setImage(null);
         tt.stop();
         tt.setOnFinished(null);
         gameLoop.stop();
-
-        isAnswered = false;
-        needAnswerQuizz = false;
-        isStartAgain = false;
-        isMoving = false;
-        step = 0;
-
-        diceImage = null;
-        loadingImage = null;
-        quizStateImage = null;
-        shipImage = null;
-
-        game = null;
-        quiz = null;
-
-        answer1Content.setStyle("");
-        answer2Content.setStyle("");
-        answer3Content.setStyle("");
-        answer4Content.setStyle("");
+        if (mediaPlayer != null) {
+            mediaPlayer.dispose();
+        }
     }
 }
 

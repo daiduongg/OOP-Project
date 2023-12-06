@@ -283,7 +283,6 @@ public class SearchController implements Initializable {
             }
         });
 
-        System.out.println(-1);
         filteredSuggestions.setPredicate(keyword ->
                 historyWordList.isEmpty() || historyWordList.contains(keyword.toLowerCase()));
         suggestionBox.getChildren().clear();
