@@ -86,7 +86,7 @@ public class ChatBotController implements Initializable {
 
                 chatBotTask.setOnSucceeded(workerStateEvent -> {
                     String response = chatBotTask.getValue();
-                    System.out.println(response);
+                   // System.out.println(response);
                     if (isNeedResponse[indexQuestion]) {
                         HBox responseContainer = createMessageContainer(GPT_ICON, "ChatGPT", proccessedString(response));
                         chatBox.getChildren().add(responseContainer);
@@ -95,7 +95,9 @@ public class ChatBotController implements Initializable {
                     }
                 });
                 new Thread(chatBotTask).start();
-            } else {
+            }
+        } else {
+            if (isSending) {
                 disconnect();
             }
         }
@@ -147,7 +149,9 @@ public class ChatBotController implements Initializable {
         if (chatBox.getChildren().size() > 0) {
             disconnect();
             chatBox.getChildren().remove(chatBox.getChildren().size() - 1);
-            chatBox.getChildren().remove(chatBox.getChildren().size() - 1);
+            if (chatBox.getChildren().size() > 1) {
+                chatBox.getChildren().remove(chatBox.getChildren().size() - 1);
+            }
             getResponseAndShow(lastMessageInput);
         }
     }

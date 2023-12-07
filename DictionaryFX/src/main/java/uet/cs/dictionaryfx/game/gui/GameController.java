@@ -208,7 +208,7 @@ public class GameController implements Initializable {
         }
 
         if (isStartAgain) {
-            System.out.println("start again");
+           // System.out.println("start again");
             isMoving = true;
             isStartAgain = false;
             game.setCurrentIsland(0);

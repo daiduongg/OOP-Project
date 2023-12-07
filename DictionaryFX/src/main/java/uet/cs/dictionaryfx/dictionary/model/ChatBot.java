@@ -45,7 +45,7 @@ public class ChatBot {
 
             // returns the extracted contents of the response.
             String test = extractContentFromResponse(response.toString());
-            System.out.println(test);
+           // System.out.println(test);
             return test;
 
         } catch (IOException e) {

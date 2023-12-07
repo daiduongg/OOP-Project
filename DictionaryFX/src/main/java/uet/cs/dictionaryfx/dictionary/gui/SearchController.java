@@ -307,12 +307,12 @@ public class SearchController implements Initializable, BaseController {
                         }
                         File file = new File(fileName);
                         String mediaPath = file.toURI().toURL().toString();
-                        System.out.println(mediaPath);
+                        //System.out.println(mediaPath);
                         Media media = new Media(mediaPath);
                         mediaPlayer = new MediaPlayer(media);
                         mediaPlayer.play();
                         mediaPlayer.setOnEndOfMedia(() -> {
-                            System.out.println("End of media");
+                            //System.out.println("End of media");
                             mediaPlayer.stop();
                             //mediaPlayer.dispose();
                         });
