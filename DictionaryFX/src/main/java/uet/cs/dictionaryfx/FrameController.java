@@ -98,6 +98,7 @@ public class FrameController implements Initializable {
     }
 
     public void setCenterToSearch() {
+        GameController.clear();
         MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootSearch());
         setDefaultButtonsColor();
@@ -119,6 +120,7 @@ public class FrameController implements Initializable {
     }
 
     public void setCenterToGoogleTranslate() {
+        GameController.clear();
         MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootGoogleTranslate());
         setDefaultButtonsColor();
@@ -126,6 +128,7 @@ public class FrameController implements Initializable {
     }
 
     public void setCenterToChatBot() {
+        GameController.clear();
         MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootChatBot());
         setDefaultButtonsColor();
@@ -133,6 +136,7 @@ public class FrameController implements Initializable {
     }
 
     public void setCenterToFavorite() {
+        GameController.clear();
         MenuGameController.clearMusic();
         mainBP.setCenter(SceneManager.getRootFavorite());
         setDefaultButtonsColor();

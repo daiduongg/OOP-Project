@@ -111,9 +111,9 @@ public class GameController implements Initializable {
     private Pane endPane;
 
     private Game game;
-    private GameLoop gameLoop;
+    private static GameLoop gameLoop;
     private Quiz quiz;
-    private TranslateTransition tt;
+    private static TranslateTransition tt;
 
     private int userAnswer;
     private boolean isAnswered;
@@ -121,7 +121,7 @@ public class GameController implements Initializable {
     private boolean isStartAgain;
     private boolean isMoving;
     private int step;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private Parent menuRoot;
 
 
@@ -428,10 +428,14 @@ public class GameController implements Initializable {
         }
     }
 
-    public void clear() {
-        tt.stop();
-        tt.setOnFinished(null);
-        gameLoop.stop();
+    public static void clear() {
+        if (tt != null) {
+            tt.stop();
+            tt.setOnFinished(null);
+        }
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
         if (mediaPlayer != null) {
             mediaPlayer.dispose();
         }
