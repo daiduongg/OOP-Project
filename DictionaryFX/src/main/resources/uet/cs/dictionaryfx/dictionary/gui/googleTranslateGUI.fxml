@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="768.0" prefWidth="914.0" style="-fx-background-radius: 10;" styleClass="searchPane" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.dictionary.gui.GoogleTranslateController">
+   <children>
+      <HBox alignment="CENTER" layoutX="31.0" layoutY="315.0" prefHeight="225.0" prefWidth="851.0" spacing="20.0">
+         <children>
+            <JFXTextArea fx:id="inputField" prefHeight="226.0" prefWidth="380.0" style="-fx-background-color: white; -fx-background-radius: 10;" wrapText="true">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </JFXTextArea>
+            <JFXButton fx:id="convertButton" contentDisplay="GRAPHIC_ONLY" onAction="#handleConvertButton" style="-fx-background-radius: 50; -fx-border-radius: 50;" stylesheets="@stylesheet.css">
+               <graphic>
+                  <ImageView fitHeight="63.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Assets/icons8-convert-64.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXTextArea fx:id="outputField" editable="false" labelFloat="true" prefHeight="226.0" prefWidth="380.0" promptText="Translation" style="-fx-background-color: #F9F9F9; -fx-background-radius: 10;" viewOrder="10.0" wrapText="true">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </JFXTextArea>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="574.0" layoutY="262.0" prefHeight="42.0" prefWidth="236.0" spacing="10.0">
+         <children>
+            <ImageView fx:id="outputFlagImage" fitHeight="32.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Assets/vi-flag.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="outputLabel" prefHeight="42.0" prefWidth="146.0" text="Vietnamese" textFill="#faff97">
+               <font>
+                  <Font name="Arial Bold Italic" size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="104.0" layoutY="262.0" prefHeight="42.0" prefWidth="236.0" spacing="10.0">
+         <children>
+            <ImageView fx:id="inputFlagImage" fitHeight="32.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Assets/en-flag.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="inputLabel" prefHeight="42.0" prefWidth="146.0" text="English" textFill="#faff97">
+               <font>
+                  <Font name="Arial Bold Italic" size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Text fill="WHITE" layoutX="281.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GOOGLE TRANSLATE" textAlignment="CENTER" wrappingWidth="350.083984375">
+         <font>
+            <Font name="Arial Black" size="50.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow>
+                     <color>
+                        <Color green="0.46666666865348816" blue="1.0" />
+                     </color>
+                  </DropShadow>
+               </input>
+            </Bloom>
+         </effect>
+      </Text>
+   </children>
+</AnchorPane>

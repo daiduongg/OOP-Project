@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="768.0" prefWidth="914.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.cs.dictionaryfx.dictionary.gui.SearchController">
+   <children>
+      <BorderPane prefHeight="768.0" prefWidth="914.0" style="-fx-border-color: grey;">
+         <top>
+            <AnchorPane prefHeight="200.0" prefWidth="914.0" style="-fx-background-radius: 10; -fx-border-radius: 10;" styleClass="searchPane" stylesheets="@stylesheet.css" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="searchField" layoutX="36.0" layoutY="104.0" onKeyPressed="#handleEnterSearchField" prefHeight="43.0" prefWidth="536.0" promptText="Search English" style="-fx-background-radius: 20;" styleClass="scroll-bar" stylesheets="@stylesheet.css">
+                     <font>
+                        <Font size="20.0" />
+                     </font></TextField>
+                  <Button fx:id="searchButton" contentDisplay="GRAPHIC_ONLY" layoutX="572.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleSearchButton" prefHeight="22.0" prefWidth="33.0" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Search">
+                     <graphic>
+                        <ImageView fitHeight="44.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Assets/search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <HBox alignment="CENTER" layoutX="54.0" layoutY="26.0" prefHeight="48.0" prefWidth="500.0" spacing="70.0">
+                     <children>
+                        <Button fx:id="enViModeButton" alignment="CENTER" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#handleEnViButton" prefHeight="48.0" prefWidth="205.0" style="-fx-background-color: #1D4F97; -fx-background-radius: 50;" stylesheets="@stylesheet.css" text="English-Vietnamese" textFill="WHITE" underline="true">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="viEnModeButton" alignment="CENTER" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#handleViEnButton" prefHeight="48.0" prefWidth="205.0" style="-fx-background-color: #1D4F97; -fx-background-radius: 50;" stylesheets="@stylesheet.css" text="Vietnamese-English" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="177.0" fitWidth="242.0" layoutX="651.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Assets/Ybin.gif" />
+                     </image>
+                  </ImageView>
+                  <HBox alignment="CENTER" layoutX="432.0" layoutY="112.0" prefHeight="28.0" prefWidth="134.0">
+                     <children>
+                        <Button fx:id="clearSearchButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleClearWordButton" prefHeight="24.0" prefWidth="23.0" style="-fx-background-color: white;" stylesheets="@stylesheet.css" text="delete">
+                           <graphic>
+                              <ImageView fitHeight="13.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-x-100.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Text fx:id="statusMode" fill="#1d2a57" strokeType="OUTSIDE" strokeWidth="0.0" text="| English" wrappingWidth="104.13677978515625">
+                           <font>
+                              <Font name="Arial" size="17.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <Pane fx:id="darkPaneTop" opacity="0.51" prefHeight="200.0" prefWidth="914.0" style="-fx-background-color: black;" visible="false" />
+               </children>
+               <BorderPane.margin>
+                  <Insets top="-1.0" />
+               </BorderPane.margin>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane prefHeight="358.0" prefWidth="914.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <TextArea fx:id="explainField" editable="false" layoutX="32.0" layoutY="54.4" prefHeight="480.0" prefWidth="850.0" promptText="Explain word" style="-fx-background-radius: 10; -fx-background-radius: 10;" styleClass="scroll-bar" stylesheets="@stylesheet.css" wrapText="true" AnchorPane.topAnchor="54.0">
+                     <font>
+                        <Font name="Arial" size="23.0" />
+                     </font>
+                  </TextArea>
+                  <HBox layoutX="681.0" layoutY="70.0" prefHeight="42.0" prefWidth="148.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="speechButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleSpeechButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Speak">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-audio-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="favoriteButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleFavoriteButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Favorite">
+                           <graphic>
+                              <ImageView fx:id="favoriteWordImage" fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/unfavorite.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="editButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleEditButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Edit">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-edit-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <VBox fx:id="suggestionBox" layoutX="37.0" layoutY="-50.0" prefHeight="330.0" prefWidth="536.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10;" visible="false">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <padding>
+                        <Insets bottom="3.0" left="15.0" top="5.0" />
+                     </padding>
+                  </VBox>
+                  <HBox layoutX="681.0" layoutY="10.0" prefHeight="43.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="historyRemoveButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleHistoryRemoveButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="HistoryRemove" visible="false">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-history-100%20(1).png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="addButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleAddButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Add">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-plus-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#handleDeleteWordButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Delete">
+                           <graphic>
+                              <ImageView fitHeight="76.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Assets/icons8-remove-64.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Pane fx:id="darkPaneCenter" opacity="0.51" prefHeight="569.0" prefWidth="914.0" style="-fx-background-color: black;" visible="false" />
+                  <Pane fx:id="addWordPane" layoutX="172.0" layoutY="-70.0" prefHeight="470.0" prefWidth="570.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10;" visible="false">
+                     <children>
+                        <HBox alignment="CENTER" layoutY="98.0" prefHeight="319.0" prefWidth="570.0" spacing="15.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                           <children>
+                              <TextArea fx:id="wordNameAddField" prefHeight="300.0" prefWidth="250.0" promptText="Word" style="-fx-background-radius: 10; -fx-border-radius: 10;" wrapText="true">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </TextArea>
+                              <TextArea fx:id="wordDataAddField" prefHeight="300.0" prefWidth="250.0" promptText="Explanation" style="-fx-background-radius: 10; -fx-border-radius: 10;" wrapText="true">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </TextArea>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="406.0" layoutY="432.0" prefHeight="16.0" prefWidth="150.0">
+                           <children>
+                              <Button fx:id="cancelAddButton" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#handleCancelAddButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Cancel" textFill="#1d2a57">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <Button fx:id="submitAddButton" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#handleSubmitAddButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Submit" textFill="#1d2a57">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Label layoutX="154.0" layoutY="14.0" text="Add Word" textFill="#1d2a57">
+                           <font>
+                              <Font name="Arial Black" size="50.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <HBox alignment="CENTER" layoutX="704.0" layoutY="487.0" prefHeight="32.0" prefWidth="164.0" spacing="15.0">
+                     <children>
+                        <Button fx:id="cancelEditButton" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#handleCancelEditButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Cancel" textFill="#1d2a57" visible="false">
+                           <font>
+                              <Font name="Arial Black" size="14.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="submitEditButton" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#handleSubmitEditButton" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@stylesheet.css" text="Submit" textFill="#1d2a57" visible="false">
+                           <font>
+                              <Font name="Arial Black" size="14.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children></AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
