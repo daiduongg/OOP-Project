@@ -15,6 +15,12 @@ DictionaryFX is a second-year project developed by students from the University 
   - Interactive language-learning game to enhance vocabulary.
 - **ChatGPT Integration:**
   - Leverages the ChatGPT API to provide a language-learning BOT for additional support.
+ 
+## Prerequisites
+
+- Java 8 or later installed.
+- JavaFX library.
+
 
 ## Installation
 
