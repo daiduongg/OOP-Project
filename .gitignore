@@ -31,8 +31,3 @@ replay_pid*
 *.ppt
 *.pptx
 *.pdf
-
-#Required
-*.idea
-*.target
-*.out
