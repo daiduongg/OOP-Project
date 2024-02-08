@@ -8,13 +8,15 @@ DictionaryFX is a second-year project developed by students from the University 
 ## Key Features
 
 - **Comprehensive Dictionary Functions:**
-  - Search, Text to Speech, Search History, Favorite New Words, Add-Edit-Delete Words, and more.
+  - Text to Speech, Search, History, Favorite, Add-Edit-Delete Words, and more.
+- **Database Management:**
+  - SQLite. 
 - **Google Translate Integration:**
-  - Seamless integration with the Google Translate API for sentence translation.
+  - Apply the Google Translate API for sentence translation.
 - **Engaging English Learning Game:**
   - Interactive language-learning game to enhance vocabulary.
 - **ChatGPT Integration:**
-  - Leverages the ChatGPT API to provide a language-learning BOT for additional support.
+  - Apply the ChatGPT API to provide a language-learning BOT for additional support.
  
 ## Prerequisites
 
@@ -57,3 +59,5 @@ For support, bug reports, or feature requests, please open an [issue](https://gi
 ![Screenshot 2024-01-27 000715](https://github.com/oceantran27/DictionaryFX/assets/89170516/8a6f618f-ccb7-43f9-a6b7-9a496645047a)
 
 ![Screenshot 2024-01-27 000950](https://github.com/oceantran27/DictionaryFX/assets/89170516/1f2f2de9-7f87-4012-95a1-e17b0a951d4a)
+
+![289236354-9326382d-5121-4e80-83a9-b052dc6afc53](https://github.com/oceantran27/DictionaryFX/assets/89170516/f4c9d4a4-0aa8-4803-bccb-1556c4b0ffd5)
