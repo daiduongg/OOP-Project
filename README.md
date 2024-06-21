@@ -1,10 +1,5 @@
 # DictionaryFX
 
-DictionaryFX is a second-year project developed by students from the University of Engineering and Technology (UET) as part of their Object-Oriented Programming (OOP) coursework. The project showcases the collaborative efforts of two students:
-
-- [OceanTran](https://github.com/oceantran27)
-- [DelaMonZ](https://github.com/delamonz)
-
 ## Key Features
 
 - **Comprehensive Dictionary Functions:**
